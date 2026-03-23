@@ -255,3 +255,139 @@ Call log:
 2026-03-23 14:55:06 | INFO | scraper.publimetro | Noticias encontradas: 15
 2026-03-23 14:55:09 | INFO | news_scraper | Fuente procesada fuente=publimetro revisadas=15 nuevas=0
 2026-03-23 14:55:09 | INFO | news_scraper | Proceso finalizado resumen={'total_revisadas': 104, 'total_nuevas': 0, 'errores': []}
+2026-03-23 15:43:59 | INFO | news_scraper | Iniciando proceso de scraping con 7 fuentes
+2026-03-23 15:43:59 | INFO | news_scraper | Scrapeando fuente=Meganoticias
+2026-03-23 15:44:06 | INFO | scraper.Meganoticias | Noticias encontradas: 18
+2026-03-23 15:44:14 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517757-advierten-alza-pasajes-buses-interurbanos-impacto-mepco-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:15 | INFO | news_scraper | Noticia guardada fuente=Meganoticias score=2 title=Advierten alza en pasajes de buses interurbanos si cambia el Mepco: ¿Cuánto podr
+2026-03-23 15:44:16 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517758-jaime-leyton-posibilidad-ola-de-frio-santiago-temperatura-mas-baja-manana-mas-helada-del-ano-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:16 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517743-analisis-mauricio-morales-baja-aprobacion-jose-antonio-kast-desaprobacion-42-por-ciento-cadem-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:17 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517742-empresa-de-conservas-se-va-a-quiebra-remate-de-sus-productos-cuando-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:18 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517751-temblor-hoy-zona-norte-chile-socaire-region-antofagasta-sismologia-nacional-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:19 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517749-gobierno-modifica-numero-semanas-informe-precio-bencina-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:20 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517741-ley-40-horas-modificacion-horario-colacion-banda-horaria-articulo-22-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:21 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517748-amplio-operativo-confuso-incidente-banco-providencia-funcionario-atrapado-asalto-sucursal-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:22 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517745-carabinero-da-muerte-hombre-procedimiento-vif-buin-sujeto-ataco-al-policia-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:23 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517738-nicolas-zepeda-se-defiende-en-japones-tras-acusacion-amiga-narumi-kurosaki-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:24 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517740-dos-temblores-con-solo-minutos-diferencia-hoy-zona-norte-chile-socaire-region-antofagasta-sismologia-nacional-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:25 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517737-delincuentes-intento-asalto-funcionarios-pdi-dos-antisociales-heridos-estacion-servicio-buin-23-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:26 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517734-temblor-hoy-zona-centro-sur-region-maule-chile-sismologia-nacional-dcv-23-3-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:26 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517733-temblor-hoy-zona-sur-region-biobio-chile-sismologia-nacional-dcv-23-3-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:27 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517732-temblor-hoy-zona-norte-region-antofagasta-chile-sismologia-nacional-dcv-23-3-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:28 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517726-corte-de-luz-region-metropolitana-santiago-lunes-23-marzo-enel-comunas-dcv-23-3-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:29 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517728-video-ponen-venta-arriendo-casa-expresidente-gabriel-boric-barrio-yungay-conoce-como-es-22-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 15:44:29 | INFO | news_scraper | Fuente procesada fuente=Meganoticias revisadas=17 nuevas=1
+2026-03-23 15:44:29 | INFO | news_scraper | Scrapeando fuente=biobiochile
+2026-03-23 15:44:54 | ERROR | news_scraper | Error en fuente=biobiochile
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/webscraping-noticias/src/main.py", line 31, in procesar_noticias
+    noticias = scraper.fetch()
+               ^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/src/scrapers/biobio.py", line 43, in fetch
+    page.wait_for_selector("body pre", timeout=20000)
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/sync_api/_generated.py", line 8217, in wait_for_selector
+    self._sync(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_page.py", line 419, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 20000ms exceeded.
+Call log:
+  - waiting for locator("body pre") to be visible
+
+2026-03-23 15:44:54 | INFO | news_scraper | Scrapeando fuente=theclinic
+2026-03-23 15:45:05 | INFO | scraper.theclinic | Noticias encontradas: 9
+2026-03-23 15:45:06 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/20/economistas-coinciden-con-grau-en-destacar-reduccion-de-la-deuda-bruta-en-2025-aunque-advierten-que-es-marginal/ "HTTP/1.1 403 Forbidden"
+2026-03-23 15:45:06 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/20/gobierno-de-kast-elevo-el-techo-para-pago-de-asesores-de-confianza-de-55-millones-en-la-administracion-de-boric-a-99-millones/ "HTTP/1.1 403 Forbidden"
+2026-03-23 15:45:06 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/20/syncore-aborda-conflicto-con-filial-de-la-gigante-espanola-ohla-el-principal-riesgo-es-que-se-normalice-que-una-empresa-pueda-no-cumplir-lo-que-la-justicia-determina/ "HTTP/1.1 403 Forbidden"
+2026-03-23 15:45:07 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/19/taxis-colectivos-presionan-al-gobierno-y-se-reunen-con-ministro-quiroz-en-medio-de-debate-por-el-mepco-es-justo-que-tengamos-un-trato-equitativo-con-otros-sectores/ "HTTP/1.1 403 Forbidden"
+2026-03-23 15:45:07 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/19/cadem-toma-el-pulso-a-medidas-de-kast-el-52-esta-en-desacuerdo-con-eliminar-el-mepco-y-la-mayoria-se-opone-a-limitar-la-gratuidad-universitaria/ "HTTP/1.1 403 Forbidden"
+2026-03-23 15:45:07 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/19/una-inversion-historica-freeport-mcmoran-destinara-cerca-de-us7-500-millones-en-minera-el-abra-para-extender-su-vida-util-y-elevar-la-produccion-de-cobre/ "HTTP/1.1 403 Forbidden"
+2026-03-23 15:45:07 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/19/quiroz-por-inminente-ajuste-al-mepco-no-vamos-a-esperar-a-que-la-fortuna-de-vuelta-las-cosas-mientras-gastamos-us200-millones-por-semana/ "HTTP/1.1 403 Forbidden"
+2026-03-23 15:45:07 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/18/pib-per-capita-de-chille-llega-a-us-17-830-y-mantiene-liderazgo-en-la-region-se-mantiene-por-debajo-de-solo-un-pais-de-america-latina/ "HTTP/1.1 403 Forbidden"
+2026-03-23 15:45:07 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/18/gremio-de-camioneros-define-postura-en-medio-de-incertidumbre-por-el-futuro-del-mecanismo-nosotros-no-estamos-pensando-en-la-eliminacion-total-del-mepco/ "HTTP/1.1 403 Forbidden"
+2026-03-23 15:45:07 | INFO | news_scraper | Fuente procesada fuente=theclinic revisadas=9 nuevas=0
+2026-03-23 15:45:07 | INFO | news_scraper | Scrapeando fuente=elmostrador
+2026-03-23 15:45:11 | INFO | scraper.elmostrador | Noticias encontradas: 20
+2026-03-23 15:45:16 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/23/el-enjambre-societario-detras-de-los-pmgd-que-el-informe-de-quiroz-asociados-omitio/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:16 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/19/nueva-presidenta-de-la-cmf-remueve-a-tres-directores-clave-y-redefine-liderazgos-internos/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:17 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/el-semanal/2026/03/19/jose-antonio-kast-debuta-en-la-moneda-tirando-toda-la-carne-a-la-parrilla/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:20 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/noticias/multimedia/la-mesa/2026/03/19/hermann-gonzalez-haber-ganado-eleccion-no-significa-que-estan-los-votos-para-hacer-lo-que-quiera/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:21 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/18/hacienda-califica-como-el-segundo-peor-desempeno-economico-desde-1990-el-periodo-de-boric/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:22 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/18/economia-en-chile-crecio-25-supero-levemente-lo-esperado-en-ultimo-ipom/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:22 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/el-semanal/2026/03/16/wall-street-al-presidente-kast-iran-y-falta-de-caja-le-complican-su-debut/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:25 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/13/choque-por-la-caja-fiscal-grau-contradice-a-quiroz-tras-denuncia-de-fisco-sin-caja/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:26 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/noticias/pais/2026/03/13/osvaldo-rosales-la-economia-chilena-esta-muy-lejos-de-cualquier-senal-de-emergencia/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:26 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/el-semanal/2026/03/12/presidente-kast-en-la-moneda-tiempos-dificiles-pero-no-emergencia/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:29 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/12/bloomberg-ee-uu-ve-una-oportunidad-historica-para-chile-por-minerales/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:30 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/el-semanal/2026/03/09/jose-antonio-kast-debuta-en-la-moneda-con-el-mundo-en-llamas/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:31 | INFO | news_scraper | Noticia guardada fuente=elmostrador score=5 title=José Antonio Kast debuta en La Moneda con el mundo en llamas
+2026-03-23 15:45:32 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/06/inflacion-menor-a-la-esperada-pero-no-se-movio-ipc-de-febrero-registro-variacion-de-00/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:34 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/06/atlas-cash-lanza-primera-app-en-chile-para-cambio-de-cupo-en-dolares-mas-seguridad-y-agilidad/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:36 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/05/mas-deuda-mas-exigencias-como-esta-cambiando-el-acceso-al-credito-en-chile/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:37 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/el-semanal/2026/03/05/herencia-fiscal-complica-el-arranque-del-nuevo-gobierno-y-se-toma-la-agenda/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:40 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/noticias/multimedia/la-mesa/2026/03/05/mauricio-jelvez-chile-tiene-espacio-en-nuevo-orden-mundial-pero-necesita-inteligencia-economica/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:40 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/noticias/mundo/2026/03/22/apoyo-incondicional-de-milei-a-eeuu-e-israel-genera-malestar-y-preocupacion-en-argentina/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:42 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/noticias/deportes/2026/03/22/celebra-valparaiso-santiago-wanderers-hace-historia-y-conquista-la-libertadores-sub-20/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:43 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/noticias/sin-editar/2026/03/23/gran-portaaviones-y-buque-destructor-de-eeuu-haran-parada-en-chile-en-viaje-por-las-americas/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:43 | INFO | news_scraper | Fuente procesada fuente=elmostrador revisadas=20 nuevas=1
+2026-03-23 15:45:43 | INFO | news_scraper | Scrapeando fuente=walmartchile
+2026-03-23 15:45:46 | INFO | scraper.walmartchile | Noticias encontradas: 8
+2026-03-23 15:45:48 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-comparte-los-buenos-resultados-de-2025-con-la-operacion-a-traves-de-un-bono-por-us25-millones/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:49 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/un-nuevo-comienzo-en-temuco-reabrimos-nuestro-supermercado-lider-prieto/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:50 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-y-desafio-levantemos-chile-impulsan-reconstruccion-de-dos-sedes-sociales-y-un-jardin-infantil-en-biobio-tras-incendios-forestales/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:51 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-y-fundacion-walmart-invertiran-us1-millon-para-apoyar-la-reconstruccion-en-biobio/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:51 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-habilita-centros-de-acopio-en-la-region-metropolitana-por-incendios-en-biobio-y-nuble/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:52 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/alimentacion-saludable-el-compromiso-de-acercar-las-mejores-opciones-a-las-familias-chilenas/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:52 | INFO | news_scraper | Noticia guardada fuente=walmartchile score=4 title=Alimentación saludable: el compromiso de acercar las mejores opciones a las fami
+2026-03-23 15:45:53 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-inaugura-nuevo-express-de-lider-en-larapinta-y-fortalece-el-empleo-local-en-lampa/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:54 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/lider-la-farfana-abre-sus-puertas-y-revive-el-centro-comercial-el-rosal-en-maipu/ "HTTP/1.1 200 OK"
+2026-03-23 15:45:54 | INFO | news_scraper | Fuente procesada fuente=walmartchile revisadas=8 nuevas=1
+2026-03-23 15:45:54 | INFO | news_scraper | Scrapeando fuente=portalinnova
+2026-03-23 15:45:59 | INFO | scraper.portalinnova | Noticias encontradas: 16
+2026-03-23 15:46:04 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/dolar-abre-en-923-con-leve-baja-impulsado-por-repunte-del-cobre-y-correccion-del-dolar-global/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:05 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/circlepack-2026-brasil-sera-el-pais-invitado-de-honor-en-la-unica-feria-internacional-de-packaging-de-chile/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:05 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/premio-alsea-2026-convoca-a-investigadores-chilenos/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:06 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/starken-suma-86-nuevos-puntos-de-envio-y-retiro-a-su-red-nacional-a-traves-de-alianza-estrategica-con-autoplanet-y-agroplanet/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:06 | INFO | news_scraper | Noticia guardada fuente=portalinnova score=10 title=Starken suma 86 nuevos puntos de envío y retiro a su red nacional, a través de a
+2026-03-23 15:46:07 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/las-tendencias-que-marcaran-la-transformacion-de-los-bancos-este-2026/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:07 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/inteligencia-artificial-sinonimo-de-ahorro/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:08 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/barometro-laboral-cies-udd-y-asociacion-de-afp-brecha-de-empleos-en-su-segundo-nivel-mas-bajo-desde-la-pandemia/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:09 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/guerra-oriente-medio-estanflacion-energia-impacto-global/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:10 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/suspension-del-iva-bajara-el-precio-de-las-viviendas/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:10 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/operacion-renta-falta-de-visibilidad-financiera-y-procesos-manuales-son-algunos-de-los-principales-desafios-del-periodo/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:11 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/dolar-en-chile-cierra-en-92445-impulsado-por-fuerte-caida-del-cobre-y-mayor-tension-global/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:11 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/morosidad-riesgo-digital-y-eventos-extremos-las-5-razones-por-las-que-las-pymes-estan-mirando-cada-vez-mas-de-cerca-los-seguros/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:12 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/escasez-de-bodegas-en-santiago-presiona-precios-al-alza-vacancia-toca-minimos-historicos-frente-a-sus-pares-regionales/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:13 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/start-up-chile-inicia-nuevo-proceso-de-aceleracion-para-70-emprendimientos-tecnologicos/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:13 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/dolar-abre-en-915-con-alza-moderada-impulsado-por-caida-del-cobre-y-contexto-global-aun-incierto/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:14 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/abastible-y-mujer-impacta-firman-alianza-para-apoyar-los-emprendimientos-sociales-femeninos/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:14 | INFO | news_scraper | Fuente procesada fuente=portalinnova revisadas=16 nuevas=1
+2026-03-23 15:46:14 | INFO | news_scraper | Scrapeando fuente=publimetro
+2026-03-23 15:46:17 | INFO | scraper.publimetro | Noticias encontradas: 15
+2026-03-23 15:46:21 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/carabinero-dio-muerte-a-sujeto-en-medio-de-procedimiento-por-vif/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:21 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/gobierno-anuncia-importante-cambio-en-el-calculo-de-los-precios-de-los-combustibles-decreto-fue-publicado-este-lunes-en-el-diario-oficial/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:22 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/emergencia-en-providencia-delincuente-se-parapeto-en-banco-y-habria-tomado-rehenes-frente-a-hospital-del-salvador/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:22 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/el-presidente-nos-va-a-dar-una-sorpresa-subsecretario-de-justicia-aseguro-que-el-objetivo-de-los-indultos-es-provocar-unidad/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:23 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/testigo-clave-complica-a-zepeda-habria-solicitado-traducir-mensajes-tras-desaparicion-de-narumi/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:24 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/eeuu-aplaza-5-dias-ataques-a-plantas-electricas-de-iran-amplia-plazo-de-trump-en-estrecho-de-ormuz/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:25 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/pese-a-la-baja-en-2025-chile-sigue-registrando-cerca-de-200-mil-accidentes-laborales-al-ano/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:25 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/como-cualquier-ciudadano-captan-a-boric-viajando-en-metro-a-dias-de-dejar-la-moneda/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:26 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/pdi-confirma-salida-de-jefa-de-inteligencia-tras-peticion-del-gobierno/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:26 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/avion-choco-con-camion-de-bomberos-en-pista-de-aeropuerto-de-nueva-york-dos-personas-murieron/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:27 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/23/cadem-aprobacion-de-kast-cae-seis-puntos-en-una-semana-y-llega-a-51/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:29 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/22/kast-advierte-que-no-se-pueden-mantener-los-precios-de-los-combustibles-si-el-petroleo-se-duplica/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:30 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/22/ministro-de-transportes-descarta-reducir-flota-de-buses-en-la-rm-para-bajar-costos-asegura-que-ajustes-no-afectaran-el-servicio/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:31 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/21/a-10-dias-de-abandonar-la-moneda-expresidente-gabriel-boric-reaparecio-publicamente-en-el-primer-congreso-del-frente-amplio/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:32 | INFO | httpx | HTTP Request: GET https://www.publimetro.cl/noticias/2026/03/21/presidente-jose-antonio-kast-viajo-hasta-puerto-varas-para-despedir-al-carabinero-javier-figueroa/ "HTTP/1.1 200 OK"
+2026-03-23 15:46:32 | INFO | news_scraper | Fuente procesada fuente=publimetro revisadas=15 nuevas=0
+2026-03-23 15:46:32 | INFO | news_scraper | Proceso finalizado resumen={'total_revisadas': 85, 'total_nuevas': 4, 'errores': [{'source': 'biobiochile', 'error': 'Page.wait_for_selector: Timeout 20000ms exceeded.\nCall log:\n  - waiting for locator("body pre") to be visible\n'}]}

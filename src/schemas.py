@@ -8,3 +8,4 @@ class NoticiaSchema(BaseModel):
     img: str
     date_preview: datetime | str
     source: str
+    excerpt: str | None = None

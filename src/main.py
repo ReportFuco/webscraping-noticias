@@ -7,7 +7,7 @@ from sqlalchemy.exc import IntegrityError
 import config as ENV
 from database import create_db, get_session
 from models import Noticia
-from utils import score_noticia, setup_logging
+from utils import extraer_bajada, score_noticia, setup_logging
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +38,14 @@ def procesar_noticias() -> dict:
 
         for noticia in noticias:
             total_revisadas += 1
-            score = score_noticia(noticia.title)
+
+            excerpt = extraer_bajada(noticia.url) or noticia.excerpt
+            score = score_noticia(
+                noticia.title,
+                noticia.url,
+                noticia.source,
+                excerpt or "",
+            )
 
             if score < ENV.SCORE_MINIMO:
                 continue
@@ -49,6 +56,7 @@ def procesar_noticias() -> dict:
                 img=noticia.img,
                 date_preview=noticia.date_preview,
                 source=noticia.source,
+                excerpt=excerpt,
                 score=score,
             )
 

@@ -1,0 +1,42 @@
+2026-03-23 16:04:15 | INFO | backfill_excerpts | Iniciando backfill de excerpts limit=10000 source=None retry_all=False seleccionadas=20
+2026-03-23 16:04:15 | INFO | httpx | HTTP Request: GET https://www.theclinic.cl/2026/03/18/pib-per-capita-de-chille-llega-a-us-17-830-y-mantiene-liderazgo-en-la-region-se-mantiene-por-debajo-de-solo-un-pais-de-america-latina/ "HTTP/1.1 403 Forbidden"
+2026-03-23 16:04:15 | INFO | backfill_excerpts | Sin excerpt noticia_id=46 fuente=theclinic title=PIB per cápita de Chille llega a US$17.830 y mantiene liderazgo en la región: se
+2026-03-23 16:04:18 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/mercados/2026/03/19/nueva-presidenta-de-la-cmf-remueve-a-tres-directores-clave-y-redefine-liderazgos-internos/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:18 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=30 fuente=elmostrador title=Nueva presidenta de la CMF remueve a tres directores clave y redefine liderazgos
+2026-03-23 16:04:22 | INFO | httpx | HTTP Request: GET https://www.biobiochile.cl/noticias/nacional/region-metropolitana/2026/03/22/reportan-robo-en-joyeria-de-providencia-hay-4-personas-profugas.shtml "HTTP/1.1 200 OK"
+2026-03-23 16:04:22 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=29 fuente=biobiochile title=Reportan robo en conocida tienda de perfumes en Providencia: Hay 4 personas próf
+2026-03-23 16:04:23 | INFO | httpx | HTTP Request: GET https://www.elmostrador.cl/noticias/pais/2026/03/17/viernes-santo-reabre-debate-iglesia-pide-cerrar-comercio-cpc-eliminar-feriados-irrenunciables/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:23 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=28 fuente=elmostrador title=Viernes santo reabre debate: Iglesia pide cerrar comercio, CPC eliminar feriados
+2026-03-23 16:04:26 | INFO | httpx | HTTP Request: GET https://www.biobiochile.cl/noticias/nacional/region-metropolitana/2026/03/18/funcionario-de-la-pdi-frustra-asalto-y-balea-a-dos-delincuentes-en-local-de-comida-en-estacion-central.shtml "HTTP/1.1 200 OK"
+2026-03-23 16:04:26 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=27 fuente=biobiochile title=Funcionario de la PDI frustra asalto y balea a dos delincuentes en local de comi
+2026-03-23 16:04:27 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517311-detective-pdi-frustra-robo-local-estacion-central-detiene-dos-delincuentes-18-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 16:04:27 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=26 fuente=Meganoticias title=Detective de la PDI frustró robo en local de Estación Central: Disparó y detuvo 
+2026-03-23 16:04:29 | INFO | httpx | HTTP Request: GET https://www.biobiochile.cl/noticias/nacional/region-de-tarapaca/2026/03/17/familias-temen-que-cierre-fronterizo-en-localidad-boliviana-afecte-educacion-de-sus-hijos.shtml "HTTP/1.1 200 OK"
+2026-03-23 16:04:29 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=15 fuente=biobiochile title=Familias temen que cierre fronterizo en localidad boliviana afecte educación de 
+2026-03-23 16:04:30 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517233-red-movilidad-recorridos-mall-plaza-oeste-17-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 16:04:30 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=13 fuente=Meganoticias title=Incluye parada al interior de un mall: Red Movilidad anuncia mejoras en dos de s
+2026-03-23 16:04:34 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/ecommerce-day-chile-2026-de-la-inspiracion-a-la-accion-las-experiencias-que-conectaran-a-los-lideres-del-retail-digital/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:34 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=12 fuente=portalinnova title=eCommerce Day Chile 2026: de la inspiración a la acción, las experiencias que co
+2026-03-23 16:04:35 | INFO | httpx | HTTP Request: GET https://portalinnova.cl/ecuador-y-estados-unidos-sellan-acuerdo-historico-para-eliminar-aranceles-y-potenciar-el-comercio-bilateral/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:35 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=11 fuente=portalinnova title=Ecuador y Estados Unidos sellan acuerdo histórico para eliminar aranceles y pote
+2026-03-23 16:04:36 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/lider-la-farfana-abre-sus-puertas-y-revive-el-centro-comercial-el-rosal-en-maipu/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:36 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=10 fuente=walmartchile title=Lider La Farfana abre sus puertas y revive el Centro Comercial El Rosal en Maipú
+2026-03-23 16:04:37 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-inaugura-nuevo-express-de-lider-en-larapinta-y-fortalece-el-empleo-local-en-lampa/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:37 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=9 fuente=walmartchile title=Walmart Chile cierra el año con cinco locales inaugurados dentro de su plan de i
+2026-03-23 16:04:38 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-habilita-centros-de-acopio-en-la-region-metropolitana-por-incendios-en-biobio-y-nuble/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:38 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=8 fuente=walmartchile title=Walmart Chile refuerza apoyo a albergues en regiones afectadas por incendios for
+2026-03-23 16:04:38 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-y-fundacion-walmart-invertiran-us1-millon-para-apoyar-la-reconstruccion-en-biobio/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:38 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=7 fuente=walmartchile title=Walmart Chile y Fundación Walmart invertirán US$1 millón para apoyar la reconstr
+2026-03-23 16:04:39 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-y-desafio-levantemos-chile-impulsan-reconstruccion-de-dos-sedes-sociales-y-un-jardin-infantil-en-biobio-tras-incendios-forestales/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:39 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=6 fuente=walmartchile title=Walmart Chile y Desafío Levantemos Chile impulsan reconstrucción de dos sedes so
+2026-03-23 16:04:40 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/un-nuevo-comienzo-en-temuco-reabrimos-nuestro-supermercado-lider-prieto/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:40 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=5 fuente=walmartchile title=Un nuevo comienzo en Temuco: reabrimos nuestro supermercado Lider Prieto
+2026-03-23 16:04:41 | INFO | httpx | HTTP Request: GET https://www.walmartchile.cl/walmart-chile-comparte-los-buenos-resultados-de-2025-con-la-operacion-a-traves-de-un-bono-por-us25-millones/ "HTTP/1.1 200 OK"
+2026-03-23 16:04:41 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=4 fuente=walmartchile title=Walmart Chile comparte los buenos resultados de 2025 con la operación a través d
+2026-03-23 16:04:43 | INFO | httpx | HTTP Request: GET https://www.biobiochile.cl/noticias/nacional/region-metropolitana/2026/03/17/fiscalia-sur-pide-formalizar-a-7-exfuncionarios-de-policia-local-de-la-granja-por-fraude-de-multas-tag.shtml "HTTP/1.1 200 OK"
+2026-03-23 16:04:43 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=3 fuente=biobiochile title=Fiscalía Sur pide formalizar a 7 exfuncionarios de Policía Local de La Granja po
+2026-03-23 16:04:44 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517215-tienda-de-ropa-liquidacion-descuentos-17-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 16:04:44 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=2 fuente=Meganoticias title=Por cierre de local: Tienda de ropa anuncia liquidación y tendrá descuentos de h
+2026-03-23 16:04:45 | INFO | httpx | HTTP Request: GET https://www.meganoticias.cl/nacional/517234-toma-san-felipe-yevide-ciudad-con-comercio-iglesias-discoteca-desalojo-17-03-2026.html "HTTP/1.1 200 OK"
+2026-03-23 16:04:45 | INFO | backfill_excerpts | Excerpt actualizado noticia_id=1 fuente=Meganoticias title=De toma a "ciudad": Crece campamento en San Felipe con comercio, iglesias, spa, 
+2026-03-23 16:04:45 | INFO | backfill_excerpts | Backfill finalizado resumen={'revisadas': 20, 'actualizadas': 19, 'sin_cambios': 1, 'errores': 0}
