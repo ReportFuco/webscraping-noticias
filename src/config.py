@@ -18,7 +18,7 @@ EVOLUTION_CREDENCIALS={
     "api_key": getenv("APIKEY_EVOLUTION", "")
 }
 
-SCRAPERS = [
+SCRAPERS: list[type[BaseScraper]] = [
     MeganoticiasScraper,
     BioBioScraper,
     TheClinicScraper,

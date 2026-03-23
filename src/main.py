@@ -15,11 +15,11 @@ DEFAULT_LOG_FILE = BASE_DIR / "logs" / "news_scraper.log"
 LOGGER = logging.getLogger("news_scraper")
 
 
-def procesar_noticias() -> dict:
+def procesar_noticias() -> dict[str, str]:
     session = next(get_session())
     total_nuevas = 0
     total_revisadas = 0
-    errores: list[dict] = []
+    errores: list[dict[str, str]] = []
 
     LOGGER.info("Iniciando proceso de scraping con %s fuentes", len(ENV.SCRAPERS))
 

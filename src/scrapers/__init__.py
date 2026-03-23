@@ -8,10 +8,12 @@ from .publimetro import PublimetroScraper
 from .df import DFScraper
 from .dflab import DFLabScraper
 from .dfretail import DFRetailScraper
+from .base import BaseScraper
 
 
 __all__ = [
     "BioBioScraper", "MeganoticiasScraper", "TheClinicScraper",
     "ElMostradorScraper", "WalmartChileScraper", "PortalInnovaScraper",
-    "PublimetroScraper", "DFScraper", "DFLabScraper", "DFRetailScraper"
+    "PublimetroScraper", "DFScraper", "DFLabScraper", "DFRetailScraper",
+    "BaseScraper"
 ]
