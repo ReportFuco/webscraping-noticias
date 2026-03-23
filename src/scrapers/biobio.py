@@ -1,71 +1,73 @@
-from playwright.sync_api import sync_playwright
 from .base import BaseScraper
 from schemas import NoticiaSchema
 from utils import normalizar_fecha
-import json
+import httpx
+import html
+import re
 
 
 class BioBioScraper(BaseScraper):
     source = "biobiochile"
     URL = "https://www.biobiochile.cl/lista/categorias/nacional"
-    MEDIA_BASE_URL = "https://media.biobiochile.cl/wp-content/uploads/"
+    HEADERS = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/122.0.0.0 Safari/537.36"
+        ),
+        "Accept-Language": "es-CL,es;q=0.9,en;q=0.8",
+    }
 
-    def _build_image_url(self, article: dict) -> str | None:
-        post_image = article.get("post_image") or {}
-        if not isinstance(post_image, dict):
+    def _clean_text(self, value: str | None) -> str | None:
+        if not value:
             return None
-
-        thumbnails = post_image.get("thumbnails") or {}
-        image_url = (
-            thumbnails.get("social", {}).get("URL")
-            or thumbnails.get("large", {}).get("URL")
-            or post_image.get("URL")
-        )
-        if not image_url:
-            return None
-
-        if image_url.startswith("http://") or image_url.startswith("https://"):
-            return image_url
-
-        return f"{self.MEDIA_BASE_URL}{image_url.lstrip('/')}"
+        text = html.unescape(value)
+        text = re.sub(r"<[^>]+>", " ", text)
+        text = re.sub(r"\s+", " ", text).strip()
+        return text or None
 
     def fetch(self) -> list[NoticiaSchema]:
         noticias: list[NoticiaSchema] = []
+        seen_urls: set[str] = set()
 
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            context = browser.new_context(
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-            )
-            page = context.new_page()
+        with httpx.Client(headers=self.HEADERS, follow_redirects=True, timeout=30) as client:
+            response = client.get(self.URL)
+            response.raise_for_status()
+            raw_html = response.text
 
-            page.goto(self.URL, wait_until="domcontentloaded", timeout=60000)
-            page.wait_for_selector("body pre", timeout=20000)
+        article_blocks = re.findall(
+            r'<article class="article article-horizontal article-with-square.*?</article>',
+            raw_html,
+            re.IGNORECASE | re.DOTALL,
+        )
+        self.logger.info("Noticias encontradas: %s", len(article_blocks))
 
-            raw_json = page.locator("body pre").text_content()
-            data = json.loads(raw_json)
-            articles = data.get("articles", [])
+        for block in article_blocks:
+            link_match = re.search(r'<a\s+href="(https://www\.biobiochile\.cl/[^"]+)"', block, re.IGNORECASE)
+            title_match = re.search(r'<h2 class="article-title"[^>]*>(.*?)</h2>', block, re.IGNORECASE | re.DOTALL)
+            img_match = re.search(r'style="background-image:\s*url\((.*?)\)"', block, re.IGNORECASE | re.DOTALL)
+            date_match = re.search(r'<div class="article-date-hour">\s*(.*?)\s*</div>', block, re.IGNORECASE | re.DOTALL)
 
-            self.logger.info("Noticias encontradas: %s", len(articles))
+            url = link_match.group(1).strip() if link_match else None
+            title = self._clean_text(title_match.group(1)) if title_match else None
+            img_url = self._clean_text(img_match.group(1)) if img_match else None
+            raw_date = self._clean_text(date_match.group(1)) if date_match else None
+            date_preview = normalizar_fecha(raw_date) if raw_date else None
 
-            for article in articles:
-                title = (article.get("post_title") or "").strip()
-                url = article.get("post_URL") or article.get("post_URL_https")
-                img_url = self._build_image_url(article)
-                date_preview = article.get("post_date") or article.get("post_date_txt")
+            if not url or url in seen_urls:
+                continue
+            if not title or not img_url or not date_preview:
+                continue
 
-                if not title or not url or not img_url or not date_preview:
-                    continue
-
-                noticia = NoticiaSchema(
+            noticias.append(
+                NoticiaSchema(
                     title=title,
                     url=url,
                     img=img_url,
-                    date_preview=normalizar_fecha(date_preview),
+                    date_preview=date_preview,
                     source=self.source,
                 )
-                noticias.append(noticia)
-
-            browser.close()
+            )
+            seen_urls.add(url)
 
         return noticias
