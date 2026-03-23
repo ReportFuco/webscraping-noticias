@@ -26,7 +26,7 @@ class PublimetroScraper(BaseScraper):
             articles = page.locator("div.b-results-list")
             count = articles.count()
 
-            print("Noticias encontradas:", count)
+            self.logger.info("Noticias encontradas: %s", count)
 
             for i in range(count):
                 art = articles.nth(i)

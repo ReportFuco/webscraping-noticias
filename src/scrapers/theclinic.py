@@ -20,16 +20,36 @@ class TheClinicScraper(BaseScraper):
         noticias: list[NoticiaSchema] = []
 
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=False)
-            page = browser.new_page()
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+            context = browser.new_context(
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/122.0.0.0 Safari/537.36"
+                ),
+                viewport={"width": 1366, "height": 768},
+                locale="es-CL",
+                timezone_id="America/Santiago",
+            )
+            page = context.new_page()
+            page.add_init_script("""
+Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+Object.defineProperty(navigator, 'platform', {get: () => 'Win32'});
+Object.defineProperty(navigator, 'language', {get: () => 'es-CL'});
+Object.defineProperty(navigator, 'languages', {get: () => ['es-CL', 'es', 'en-US', 'en']});
+            """)
 
-            page.goto(self.URL)
-            page.wait_for_selector("section.listado-seccion article")
+            page.goto(self.URL, wait_until="domcontentloaded", timeout=60000)
+            page.wait_for_timeout(5000)
+            page.wait_for_selector("section.listado-seccion article", timeout=30000)
 
             articles = page.locator("section.listado-seccion article")
             count = articles.count()
 
-            print("Noticias encontradas:", count)
+            self.logger.info("Noticias encontradas: %s", count)
 
             for i in range(count):
                 art = articles.nth(i)

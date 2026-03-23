@@ -1,0 +1,257 @@
+2026-03-17 21:27:25 | INFO | news_scraper | Iniciando proceso de scraping con 7 fuentes
+2026-03-17 21:27:25 | INFO | news_scraper | Scrapeando fuente=Meganoticias
+2026-03-17 21:27:37 | INFO | scraper.Meganoticias | Noticias encontradas: 18
+2026-03-17 21:27:45 | INFO | news_scraper | Noticia guardada fuente=Meganoticias score=4 title=Incluye parada al interior de un mall: Red Movilidad anuncia mejoras en dos de s
+2026-03-17 21:27:45 | INFO | news_scraper | Fuente procesada fuente=Meganoticias revisadas=17 nuevas=1
+2026-03-17 21:27:45 | INFO | news_scraper | Scrapeando fuente=biobiochile
+2026-03-17 21:27:51 | INFO | scraper.biobiochile | Noticias encontradas: 20
+2026-03-17 21:27:55 | INFO | news_scraper | Noticia guardada fuente=biobiochile score=4 title=Familias temen que cierre fronterizo en localidad boliviana afecte educación de 
+2026-03-17 21:27:55 | INFO | news_scraper | Fuente procesada fuente=biobiochile revisadas=20 nuevas=1
+2026-03-17 21:27:55 | INFO | news_scraper | Scrapeando fuente=theclinic
+2026-03-17 21:28:28 | ERROR | news_scraper | Error en fuente=theclinic
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/webscraping-noticias/src/main.py", line 31, in procesar_noticias
+    noticias = scraper.fetch()
+               ^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/src/scrapers/theclinic.py", line 27, in fetch
+    page.wait_for_selector("section.listado-seccion article")
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/sync_api/_generated.py", line 8217, in wait_for_selector
+    self._sync(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_page.py", line 419, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("section.listado-seccion article") to be visible
+
+2026-03-17 21:28:28 | INFO | news_scraper | Scrapeando fuente=elmostrador
+2026-03-17 21:28:33 | INFO | scraper.elmostrador | Noticias encontradas: 20
+2026-03-17 21:28:35 | INFO | news_scraper | Fuente procesada fuente=elmostrador revisadas=20 nuevas=0
+2026-03-17 21:28:35 | INFO | news_scraper | Scrapeando fuente=walmartchile
+2026-03-17 21:28:38 | INFO | scraper.walmartchile | Noticias encontradas: 8
+2026-03-17 21:28:40 | INFO | news_scraper | Fuente procesada fuente=walmartchile revisadas=8 nuevas=0
+2026-03-17 21:28:40 | INFO | news_scraper | Scrapeando fuente=portalinnova
+2026-03-17 21:28:44 | INFO | scraper.portalinnova | Noticias encontradas: 16
+2026-03-17 21:28:47 | INFO | news_scraper | Fuente procesada fuente=portalinnova revisadas=16 nuevas=0
+2026-03-17 21:28:47 | INFO | news_scraper | Scrapeando fuente=publimetro
+2026-03-17 21:28:51 | INFO | scraper.publimetro | Noticias encontradas: 15
+2026-03-17 21:28:53 | INFO | news_scraper | Fuente procesada fuente=publimetro revisadas=15 nuevas=0
+2026-03-17 21:28:53 | INFO | news_scraper | Proceso finalizado resumen={'total_revisadas': 96, 'total_nuevas': 2, 'errores': [{'source': 'theclinic', 'error': 'Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator("section.listado-seccion article") to be visible\n'}]}
+2026-03-18 12:43:38 | INFO | news_scraper | Iniciando proceso de scraping con 7 fuentes
+2026-03-18 12:43:38 | INFO | news_scraper | Scrapeando fuente=Meganoticias
+2026-03-18 12:43:50 | INFO | scraper.Meganoticias | Noticias encontradas: 18
+2026-03-18 12:44:42 | INFO | news_scraper | Noticia guardada fuente=Meganoticias score=3 title=Detective de la PDI frustró robo en local de Estación Central: Disparó y detuvo 
+2026-03-18 12:44:42 | INFO | news_scraper | Fuente procesada fuente=Meganoticias revisadas=17 nuevas=1
+2026-03-18 12:44:42 | INFO | news_scraper | Scrapeando fuente=biobiochile
+2026-03-18 12:44:48 | INFO | scraper.biobiochile | Noticias encontradas: 19
+2026-03-18 12:44:53 | INFO | news_scraper | Noticia guardada fuente=biobiochile score=3 title=Funcionario de la PDI frustra asalto y balea a dos delincuentes en local de comi
+2026-03-18 12:44:53 | INFO | news_scraper | Fuente procesada fuente=biobiochile revisadas=19 nuevas=1
+2026-03-18 12:44:53 | INFO | news_scraper | Scrapeando fuente=theclinic
+2026-03-18 12:45:26 | ERROR | news_scraper | Error en fuente=theclinic
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/webscraping-noticias/src/main.py", line 31, in procesar_noticias
+    noticias = scraper.fetch()
+               ^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/src/scrapers/theclinic.py", line 27, in fetch
+    page.wait_for_selector("section.listado-seccion article")
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/sync_api/_generated.py", line 8217, in wait_for_selector
+    self._sync(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_page.py", line 419, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("section.listado-seccion article") to be visible
+
+2026-03-18 12:45:26 | INFO | news_scraper | Scrapeando fuente=elmostrador
+2026-03-18 12:45:30 | INFO | scraper.elmostrador | Noticias encontradas: 20
+2026-03-18 12:45:33 | INFO | news_scraper | Noticia guardada fuente=elmostrador score=3 title=Viernes santo reabre debate: Iglesia pide cerrar comercio, CPC eliminar feriados
+2026-03-18 12:45:33 | INFO | news_scraper | Fuente procesada fuente=elmostrador revisadas=20 nuevas=1
+2026-03-18 12:45:33 | INFO | news_scraper | Scrapeando fuente=walmartchile
+2026-03-23 03:32:54 | INFO | news_scraper | Iniciando proceso de scraping con 7 fuentes
+2026-03-23 03:32:54 | INFO | news_scraper | Scrapeando fuente=Meganoticias
+2026-03-23 03:33:08 | INFO | scraper.Meganoticias | Noticias encontradas: 18
+2026-03-23 03:34:29 | INFO | news_scraper | Fuente procesada fuente=Meganoticias revisadas=17 nuevas=0
+2026-03-23 03:34:29 | INFO | news_scraper | Scrapeando fuente=biobiochile
+2026-03-23 03:34:34 | INFO | scraper.biobiochile | Noticias encontradas: 19
+2026-03-23 03:34:41 | INFO | news_scraper | Noticia guardada fuente=biobiochile score=3 title=Reportan robo en conocida tienda de perfumes en Providencia: Hay 4 personas próf
+2026-03-23 03:34:41 | INFO | news_scraper | Fuente procesada fuente=biobiochile revisadas=19 nuevas=1
+2026-03-23 03:34:41 | INFO | news_scraper | Scrapeando fuente=theclinic
+2026-03-23 03:35:14 | ERROR | news_scraper | Error en fuente=theclinic
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/webscraping-noticias/src/main.py", line 31, in procesar_noticias
+    noticias = scraper.fetch()
+               ^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/src/scrapers/theclinic.py", line 27, in fetch
+    page.wait_for_selector("section.listado-seccion article")
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/sync_api/_generated.py", line 8217, in wait_for_selector
+    self._sync(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_page.py", line 419, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("section.listado-seccion article") to be visible
+
+2026-03-23 03:35:14 | INFO | news_scraper | Scrapeando fuente=elmostrador
+2026-03-23 03:35:19 | INFO | scraper.elmostrador | Noticias encontradas: 20
+2026-03-23 03:35:20 | INFO | news_scraper | Noticia guardada fuente=elmostrador score=4 title=Nueva presidenta de la CMF remueve a tres directores clave y redefine liderazgos
+2026-03-23 03:35:20 | INFO | news_scraper | Fuente procesada fuente=elmostrador revisadas=20 nuevas=1
+2026-03-23 03:35:20 | INFO | news_scraper | Scrapeando fuente=walmartchile
+2026-03-23 03:35:23 | INFO | scraper.walmartchile | Noticias encontradas: 8
+2026-03-23 03:35:25 | INFO | news_scraper | Fuente procesada fuente=walmartchile revisadas=8 nuevas=0
+2026-03-23 03:35:25 | INFO | news_scraper | Scrapeando fuente=portalinnova
+2026-03-23 03:35:29 | INFO | scraper.portalinnova | Noticias encontradas: 16
+2026-03-23 03:35:32 | INFO | news_scraper | Fuente procesada fuente=portalinnova revisadas=16 nuevas=0
+2026-03-23 03:35:32 | INFO | news_scraper | Scrapeando fuente=publimetro
+2026-03-23 03:35:35 | INFO | scraper.publimetro | Noticias encontradas: 15
+2026-03-23 03:35:38 | INFO | news_scraper | Fuente procesada fuente=publimetro revisadas=15 nuevas=0
+2026-03-23 03:35:38 | INFO | news_scraper | Proceso finalizado resumen={'total_revisadas': 95, 'total_nuevas': 2, 'errores': [{'source': 'theclinic', 'error': 'Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator("section.listado-seccion article") to be visible\n'}]}
+2026-03-23 14:39:49 | INFO | news_scraper | Iniciando proceso de scraping con 7 fuentes
+2026-03-23 14:39:49 | INFO | news_scraper | Scrapeando fuente=Meganoticias
+2026-03-23 14:40:09 | INFO | scraper.Meganoticias | Noticias encontradas: 18
+2026-03-23 14:41:34 | INFO | news_scraper | Fuente procesada fuente=Meganoticias revisadas=17 nuevas=0
+2026-03-23 14:41:34 | INFO | news_scraper | Scrapeando fuente=biobiochile
+2026-03-23 14:41:39 | INFO | scraper.biobiochile | Noticias encontradas: 19
+2026-03-23 14:41:46 | INFO | news_scraper | Fuente procesada fuente=biobiochile revisadas=19 nuevas=0
+2026-03-23 14:41:46 | INFO | news_scraper | Scrapeando fuente=theclinic
+2026-03-23 14:42:19 | ERROR | news_scraper | Error en fuente=theclinic
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/webscraping-noticias/src/main.py", line 31, in procesar_noticias
+    noticias = scraper.fetch()
+               ^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/src/scrapers/theclinic.py", line 27, in fetch
+    page.wait_for_selector("section.listado-seccion article")
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/sync_api/_generated.py", line 8217, in wait_for_selector
+    self._sync(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_page.py", line 419, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("section.listado-seccion article") to be visible
+
+2026-03-23 14:42:19 | INFO | news_scraper | Scrapeando fuente=elmostrador
+2026-03-23 14:42:24 | INFO | scraper.elmostrador | Noticias encontradas: 20
+2026-03-23 14:42:30 | INFO | news_scraper | Fuente procesada fuente=elmostrador revisadas=20 nuevas=0
+2026-03-23 14:42:30 | INFO | news_scraper | Scrapeando fuente=walmartchile
+2026-03-23 14:42:33 | INFO | scraper.walmartchile | Noticias encontradas: 8
+2026-03-23 14:42:35 | INFO | news_scraper | Fuente procesada fuente=walmartchile revisadas=8 nuevas=0
+2026-03-23 14:42:35 | INFO | news_scraper | Scrapeando fuente=portalinnova
+2026-03-23 14:42:40 | INFO | scraper.portalinnova | Noticias encontradas: 16
+2026-03-23 14:42:43 | INFO | news_scraper | Fuente procesada fuente=portalinnova revisadas=16 nuevas=0
+2026-03-23 14:42:43 | INFO | news_scraper | Scrapeando fuente=publimetro
+2026-03-23 14:42:47 | INFO | scraper.publimetro | Noticias encontradas: 15
+2026-03-23 14:42:49 | INFO | news_scraper | Fuente procesada fuente=publimetro revisadas=15 nuevas=0
+2026-03-23 14:42:49 | INFO | news_scraper | Proceso finalizado resumen={'total_revisadas': 95, 'total_nuevas': 0, 'errores': [{'source': 'theclinic', 'error': 'Page.wait_for_selector: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator("section.listado-seccion article") to be visible\n'}]}
+2026-03-23 14:48:05 | INFO | news_scraper | Iniciando proceso de scraping con 7 fuentes
+2026-03-23 14:48:05 | INFO | news_scraper | Scrapeando fuente=Meganoticias
+2026-03-23 14:48:10 | INFO | scraper.Meganoticias | Noticias encontradas: 18
+2026-03-23 14:49:19 | INFO | news_scraper | Fuente procesada fuente=Meganoticias revisadas=17 nuevas=0
+2026-03-23 14:49:19 | INFO | news_scraper | Scrapeando fuente=biobiochile
+2026-03-23 14:49:41 | ERROR | news_scraper | Error en fuente=biobiochile
+Traceback (most recent call last):
+  File "/root/.openclaw/workspace/webscraping-noticias/src/main.py", line 31, in procesar_noticias
+    noticias = scraper.fetch()
+               ^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/src/scrapers/biobio.py", line 25, in fetch
+    page.wait_for_selector("div.results article", timeout=20000)
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/sync_api/_generated.py", line 8217, in wait_for_selector
+    self._sync(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+           ^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_page.py", line 419, in wait_for_selector
+    return await self._main_frame.wait_for_selector(**locals_to_params(locals()))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_frame.py", line 369, in wait_for_selector
+    await self._channel.send(
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/.openclaw/workspace/webscraping-noticias/.venv/lib/python3.12/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_selector: Timeout 20000ms exceeded.
+Call log:
+  - waiting for locator("div.results article") to be visible
+
+2026-03-23 14:49:41 | INFO | news_scraper | Scrapeando fuente=theclinic
+2026-03-23 14:49:48 | INFO | scraper.theclinic | Noticias encontradas: 9
+2026-03-23 14:49:49 | INFO | news_scraper | Noticia guardada fuente=theclinic score=4 title=PIB per cápita de Chille llega a US$17.830 y mantiene liderazgo en la región: se
+2026-03-23 14:49:49 | INFO | news_scraper | Fuente procesada fuente=theclinic revisadas=9 nuevas=1
+2026-03-23 14:49:49 | INFO | news_scraper | Scrapeando fuente=elmostrador
+2026-03-23 14:49:52 | INFO | scraper.elmostrador | Noticias encontradas: 20
+2026-03-23 14:49:55 | INFO | news_scraper | Fuente procesada fuente=elmostrador revisadas=20 nuevas=0
+2026-03-23 14:49:55 | INFO | news_scraper | Scrapeando fuente=walmartchile
+2026-03-23 14:49:58 | INFO | scraper.walmartchile | Noticias encontradas: 8
+2026-03-23 14:49:59 | INFO | news_scraper | Fuente procesada fuente=walmartchile revisadas=8 nuevas=0
+2026-03-23 14:49:59 | INFO | news_scraper | Scrapeando fuente=portalinnova
+2026-03-23 14:50:05 | INFO | scraper.portalinnova | Noticias encontradas: 16
+2026-03-23 14:50:09 | INFO | news_scraper | Fuente procesada fuente=portalinnova revisadas=16 nuevas=0
+2026-03-23 14:50:09 | INFO | news_scraper | Scrapeando fuente=publimetro
+2026-03-23 14:50:12 | INFO | scraper.publimetro | Noticias encontradas: 15
+2026-03-23 14:50:15 | INFO | news_scraper | Fuente procesada fuente=publimetro revisadas=15 nuevas=0
+2026-03-23 14:50:15 | INFO | news_scraper | Proceso finalizado resumen={'total_revisadas': 85, 'total_nuevas': 1, 'errores': [{'source': 'biobiochile', 'error': 'Page.wait_for_selector: Timeout 20000ms exceeded.\nCall log:\n  - waiting for locator("div.results article") to be visible\n'}]}
+2026-03-23 14:54:16 | INFO | news_scraper | Iniciando proceso de scraping con 7 fuentes
+2026-03-23 14:54:16 | INFO | news_scraper | Scrapeando fuente=Meganoticias
+2026-03-23 14:54:23 | INFO | scraper.Meganoticias | Noticias encontradas: 18
+2026-03-23 14:54:30 | INFO | news_scraper | Fuente procesada fuente=Meganoticias revisadas=17 nuevas=0
+2026-03-23 14:54:30 | INFO | news_scraper | Scrapeando fuente=biobiochile
+2026-03-23 14:54:32 | INFO | scraper.biobiochile | Noticias encontradas: 19
+2026-03-23 14:54:32 | INFO | news_scraper | Fuente procesada fuente=biobiochile revisadas=19 nuevas=0
+2026-03-23 14:54:32 | INFO | news_scraper | Scrapeando fuente=theclinic
+2026-03-23 14:54:40 | INFO | scraper.theclinic | Noticias encontradas: 9
+2026-03-23 14:54:40 | INFO | news_scraper | Fuente procesada fuente=theclinic revisadas=9 nuevas=0
+2026-03-23 14:54:40 | INFO | news_scraper | Scrapeando fuente=elmostrador
+2026-03-23 14:54:44 | INFO | scraper.elmostrador | Noticias encontradas: 20
+2026-03-23 14:54:49 | INFO | news_scraper | Fuente procesada fuente=elmostrador revisadas=20 nuevas=0
+2026-03-23 14:54:49 | INFO | news_scraper | Scrapeando fuente=walmartchile
+2026-03-23 14:54:51 | INFO | scraper.walmartchile | Noticias encontradas: 8
+2026-03-23 14:54:53 | INFO | news_scraper | Fuente procesada fuente=walmartchile revisadas=8 nuevas=0
+2026-03-23 14:54:53 | INFO | news_scraper | Scrapeando fuente=portalinnova
+2026-03-23 14:54:57 | INFO | scraper.portalinnova | Noticias encontradas: 16
+2026-03-23 14:55:03 | INFO | news_scraper | Fuente procesada fuente=portalinnova revisadas=16 nuevas=0
+2026-03-23 14:55:03 | INFO | news_scraper | Scrapeando fuente=publimetro
+2026-03-23 14:55:06 | INFO | scraper.publimetro | Noticias encontradas: 15
+2026-03-23 14:55:09 | INFO | news_scraper | Fuente procesada fuente=publimetro revisadas=15 nuevas=0
+2026-03-23 14:55:09 | INFO | news_scraper | Proceso finalizado resumen={'total_revisadas': 104, 'total_nuevas': 0, 'errores': []}

@@ -34,7 +34,7 @@ class ElMostradorScraper(BaseScraper):
             articles = page.locator("figure.d-main-card")
             count = articles.count()
 
-            print("Noticias encontradas:", count)
+            self.logger.info("Noticias encontradas: %s", count)
 
             for i in range(count):
                 art = articles.nth(i)

@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: db_noticias_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: db_noticias
+      POSTGRES_USER: noticias_user
+      POSTGRES_PASSWORD: noticias_pass_change_me
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data_noticias:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U noticias_user -d db_noticias"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data_noticias:

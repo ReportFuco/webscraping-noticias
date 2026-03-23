@@ -1,6 +1,10 @@
 from io import BytesIO
 import base64
+import logging
 import requests
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class EvolutionWhatsApp:
@@ -58,15 +62,19 @@ class EvolutionWhatsApp:
                     }
                 )
             if res.status_code == 201:
-                print("mensaje enviado")
-                print(res.content)
+                LOGGER.info("Mensaje enviado numero=%s status=%s", numero, res.status_code)
                 return True
-            else:
-                print(res.status_code)
-                print(res.content)
-                print(res.url)
+
+            LOGGER.warning(
+                "No se pudo enviar mensaje numero=%s status=%s url=%s body=%s",
+                numero,
+                res.status_code,
+                res.url,
+                res.text,
+            )
+            return False
         except requests.RequestException as e:
-            print(f"El mensaje no fue enviado: {e}")
+            LOGGER.exception("El mensaje no fue enviado numero=%s", numero)
             return False
 
     def enviar_mensaje_con_boton(
@@ -104,9 +112,9 @@ class EvolutionWhatsApp:
                         "buttons": botones
                     }
                 )
-            print("✅ Mensaje con botones enviado")
+            LOGGER.info("Mensaje con botones enviado numero=%s", numero)
         except requests.exceptions.RequestException as e:
-            print(f"❌ Error al enviar mensaje con botones: {e}")
+            LOGGER.exception("Error al enviar mensaje con botones numero=%s", numero)
 
     def enviar_mensaje_foto(
             self,
@@ -162,13 +170,10 @@ class EvolutionWhatsApp:
                     "delay": delay
                 },
             )
-            print("Mensaje con imagen enviado")
-            
+            LOGGER.info("Mensaje con imagen enviado numero=%s", numero)
             return True
         
         except requests.RequestException as e:
-            
-            print(f"El mensaje no fue enviado: {e}")
-            
+            LOGGER.exception("El mensaje con imagen no fue enviado numero=%s", numero)
             return False
 
