@@ -5,10 +5,13 @@ from .elmostrador import ElMostradorScraper
 from .walmart import WalmartChileScraper
 from .portalinnova import PortalInnovaScraper
 from .publimetro import PublimetroScraper
+from .df import DFScraper
+from .dflab import DFLabScraper
+from .dfretail import DFRetailScraper
 
 
 __all__ = [
-    "BioBioScraper", "MeganoticiasScraper", "TheClinicScraper", 
+    "BioBioScraper", "MeganoticiasScraper", "TheClinicScraper",
     "ElMostradorScraper", "WalmartChileScraper", "PortalInnovaScraper",
-    "PublimetroScraper"
+    "PublimetroScraper", "DFScraper", "DFLabScraper", "DFRetailScraper"
 ]

@@ -25,11 +25,14 @@ SCRAPERS = [
     ElMostradorScraper,
     WalmartChileScraper,
     PortalInnovaScraper,
-    PublimetroScraper
+    PublimetroScraper,
+    DFScraper,
+    DFLabScraper,
+    DFRetailScraper,
 ]
 SCORE_MINIMO = 2
 
 __all__=[
-    "DATABASE_USER", "DATABASE_PASSWORD", "DATABASE_NAME", 
+    "DATABASE_USER", "DATABASE_PASSWORD", "DATABASE_NAME",
     "EVOLUTION_CREDENCIALS", "SCORE_MINIMO", "SCRAPERS"
 ]
