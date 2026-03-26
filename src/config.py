@@ -30,6 +30,7 @@ SCRAPERS: list[type[BaseScraper]] = [
     DFLabScraper,
     DFRetailScraper,
     CCSScraper,
+    AndaScraper,
 ]
 SCORE_MINIMO = 2
 

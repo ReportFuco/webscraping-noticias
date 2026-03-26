@@ -9,6 +9,7 @@ from .df import DFScraper
 from .dflab import DFLabScraper
 from .dfretail import DFRetailScraper
 from .ccs import CCSScraper
+from .anda import AndaScraper
 from .base import BaseScraper
 
 
@@ -17,5 +18,6 @@ __all__ = [
     "ElMostradorScraper", "WalmartChileScraper", "PortalInnovaScraper",
     "PublimetroScraper", "DFScraper", "DFLabScraper", "DFRetailScraper",
     "CCSScraper",
+    "AndaScraper",
     "BaseScraper"
 ]
