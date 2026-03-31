@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 import config as ENV
 from database import create_db, get_session
 from models import Noticia
+from services.news_delivery import enviar_noticias_pendientes
 from utils import extraer_bajada, score_noticia, setup_logging
 
 
@@ -15,7 +16,7 @@ DEFAULT_LOG_FILE = BASE_DIR / "logs" / "news_scraper.log"
 LOGGER = logging.getLogger("news_scraper")
 
 
-def procesar_noticias() -> dict[str, str]:
+def procesar_noticias() -> dict[str, object]:
     session = next(get_session())
     total_nuevas = 0
     total_revisadas = 0
@@ -84,10 +85,13 @@ def procesar_noticias() -> dict[str, str]:
             nuevas_fuente,
         )
 
+    delivery = enviar_noticias_pendientes(session)
+
     resumen = {
         "total_revisadas": total_revisadas,
         "total_nuevas": total_nuevas,
         "errores": errores,
+        "delivery": delivery,
     }
     LOGGER.info("Proceso finalizado resumen=%s", resumen)
     return resumen

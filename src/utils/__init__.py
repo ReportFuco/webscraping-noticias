@@ -4,9 +4,17 @@ from .logging_config import setup_logging
 from .scorer import score_noticia
 
 try:
-    from .whatsapp import EvolutionWhatsApp
+    from .whatsapp import BotWhatsApp, EvolutionWhatsApp
 except Exception:
+    BotWhatsApp = None
     EvolutionWhatsApp = None
 
 
-__all__ = ["normalizar_fecha", "extraer_bajada", "score_noticia", "EvolutionWhatsApp", "setup_logging"]
+__all__ = [
+    "normalizar_fecha",
+    "extraer_bajada",
+    "score_noticia",
+    "BotWhatsApp",
+    "EvolutionWhatsApp",
+    "setup_logging",
+]

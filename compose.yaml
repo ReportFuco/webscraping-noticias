@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: noticias_user
       POSTGRES_PASSWORD: noticias_pass_change_me
     ports:
-      - "127.0.0.1:5432:5432"
+      - "100.126.176.80:5432:5432"
     volumes:
       - postgres_data_noticias:/var/lib/postgresql/data
     healthcheck:
