@@ -23,7 +23,7 @@ SUPPLIER_WORDS = [
 TOPIC_WORDS = [
     "retail", "retailer", "supermercado", "supermercados",
     "hipermercado", "hipermercados", "tienda", "tiendas",
-    "cadena", "cadenas", "comercio", "comercial",
+    "comercio", "comercial",
     "mayorista", "conveniencia", "consumo masivo",
     "canal supermercadista", "canal tradicional", "canal moderno",
     "punto de venta", "ecommerce", "omnicanal", "marketplace",
@@ -41,16 +41,16 @@ INDIRECT_WORDS = [
     "precio", "precios", "margen", "margenes", "ventas", "ingresos",
     "utilidades", "apertura", "aperturas", "inauguracion",
     "expansion", "expansiones", "cierre", "cierres",
-    "sucursal", "sucursales", "local", "locales",
+    "sucursal", "sucursales",
     "foodservice", "canal horeca",
 ]
 
 # Expresiones que hacen más probable que una noticia indirecta sí sea útil
 RETAIL_CONNECTORS = [
     "supermercado", "supermercados", "retail", "retailer", "comercio",
-    "tienda", "tiendas", "cadena", "cadenas", "consumo masivo",
+    "tienda", "tiendas", "consumo masivo",
     "canal", "canal supermercadista", "punto de venta", "mall", "malls",
-    "centro comercial", "local", "locales",
+    "centro comercial",
 ]
 
 # Términos de macro/política que suelen meter ruido si aparecen solos
@@ -60,11 +60,28 @@ NEGATIVE_HINTS = [
     "seguridad", "homicidio", "asesinato", "asalto",
 ]
 
+# Términos policiales/judiciales que suelen generar falsos positivos por palabras como tienda/local
+CRIME_WORDS = [
+    "robo", "robos", "ladron", "ladrones", "asalto", "asaltos", "homicidio",
+    "homicidios", "asesinato", "asesinatos", "cadena perpetua", "perpetua",
+    "carabinero", "carabineros", "fiscalia", "fiscal", "tribunal", "juez",
+    "condena", "condenado", "condenaron", "prision", "crimen", "delito",
+]
+
+# Términos internacionales que suelen meter ruido cuando no hay señal retail concreta
+GENERIC_WORLD_WORDS = [
+    "francia", "ucrania", "rusia", "iran", "israel", "guerra", "onu",
+    "trump", "hezbollah", "otan", "kiev", "moscu",
+]
+
 # Términos macroeconómicos que solo deberían entrar si están conectados al canal
 MACRO_WORDS = [
     "inflacion", "ipc", "combustibles", "petroleo", "energia", "iva",
     "crecimiento", "recesion", "deuda", "credito", "tasas",
 ]
+
+
+STRONG_RETAIL_SIGNAL_THRESHOLD = 1
 
 
 def _normalize(text: str) -> str:
@@ -103,6 +120,11 @@ def score_noticia(title: str, url: str = "", source: str = "", excerpt: str = ""
     connector_matches = _count_matches(normalized, RETAIL_CONNECTORS)
     negative_matches = _count_matches(normalized, NEGATIVE_HINTS)
     macro_matches = _count_matches(normalized, MACRO_WORDS)
+    crime_matches = _count_matches(normalized, CRIME_WORDS)
+    world_matches = _count_matches(normalized, GENERIC_WORLD_WORDS)
+
+    strong_retail_signal = bool(high_matches or topic_matches or supplier_matches)
+    weak_retail_signal = bool(connector_matches or indirect_matches)
 
     raw_score = 0
 
@@ -116,10 +138,10 @@ def score_noticia(title: str, url: str = "", source: str = "", excerpt: str = ""
         raw_score += 2
 
     # Capa 3: retail indirecto / operación del canal
-    if high_matches or topic_matches or connector_matches:
+    if strong_retail_signal:
         raw_score += len(indirect_matches) * 1
-    elif len(indirect_matches) >= 2:
-        raw_score += 2
+    elif len(indirect_matches) >= 3 and connector_matches:
+        raw_score += 1
 
     # Bonos por combinaciones útiles
     if high_matches and topic_matches:
@@ -128,20 +150,38 @@ def score_noticia(title: str, url: str = "", source: str = "", excerpt: str = ""
         raw_score += 2
     if topic_matches and len(indirect_matches) >= 2:
         raw_score += 2
-    if connector_matches and len(indirect_matches) >= 2:
-        raw_score += 2
     if supplier_matches and len(indirect_matches) >= 1:
+        raw_score += 1
+    if high_matches and len(indirect_matches) >= 1:
         raw_score += 1
 
     # Macro solo suma si está conectada al canal retail
-    if macro_matches and (high_matches or topic_matches or connector_matches or supplier_matches):
+    if macro_matches and strong_retail_signal:
         raw_score += 1
 
     # Penalizaciones para bajar ruido macro/político genérico
-    if negative_matches and not (high_matches or topic_matches or supplier_matches):
+    if negative_matches and not strong_retail_signal:
         raw_score -= 2
 
-    if macro_matches and not (high_matches or topic_matches or connector_matches or supplier_matches):
+    if macro_matches and not strong_retail_signal:
         raw_score -= 1
+
+    # Penalizaciones más agresivas para policial/judicial genérico
+    if crime_matches and not strong_retail_signal:
+        raw_score -= 4
+    elif crime_matches and not high_matches:
+        raw_score -= 2
+
+    # Internacional genérico sin conexión retail real
+    if world_matches and not strong_retail_signal:
+        raw_score -= 3
+
+    # Si solo hay señales débiles, no dejar que escale demasiado
+    if not strong_retail_signal and weak_retail_signal:
+        raw_score = min(raw_score, 1)
+
+    # Casos sin señal retail real deben quedar fuera
+    if not strong_retail_signal and raw_score < STRONG_RETAIL_SIGNAL_THRESHOLD:
+        return 0
 
     return max(0, min(raw_score, 10))

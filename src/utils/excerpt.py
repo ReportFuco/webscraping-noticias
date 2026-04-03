@@ -1,3 +1,4 @@
+import asyncio
 import html
 import json
 import re
@@ -79,24 +80,74 @@ def _extract_first_paragraph(raw_html: str) -> str | None:
     return None
 
 
+def _extract_excerpt_from_html(raw_html: str, max_chars: int = 500) -> str | None:
+    for extractor in (_extract_meta_description, _extract_from_json_ld, _extract_first_paragraph):
+        text = extractor(raw_html)
+        if text:
+            return text[:max_chars].strip()
+    return None
+
+
+async def _fetch_excerpt(
+    client: httpx.AsyncClient,
+    semaphore: asyncio.Semaphore,
+    url: str,
+    max_chars: int = 500,
+) -> tuple[str, str | None]:
+    async with semaphore:
+        try:
+            response = await client.get(url)
+            response.raise_for_status()
+        except httpx.HTTPError:
+            return url, None
+
+        raw_html = response.text[:300000]
+        return url, _extract_excerpt_from_html(raw_html, max_chars=max_chars)
+
+
+async def extraer_bajadas_batch_async(
+    urls: list[str],
+    timeout: int = 20,
+    max_chars: int = 500,
+    concurrency: int = 4,
+) -> dict[str, str | None]:
+    unique_urls = list(dict.fromkeys(urls))
+    if not unique_urls:
+        return {}
+
+    semaphore = asyncio.Semaphore(max(1, concurrency))
+    async with httpx.AsyncClient(
+        headers=DEFAULT_HEADERS,
+        timeout=timeout,
+        follow_redirects=True,
+    ) as client:
+        results = await asyncio.gather(
+            *[_fetch_excerpt(client, semaphore, url, max_chars=max_chars) for url in unique_urls]
+        )
+
+    return dict(results)
+
+
+def extraer_bajadas_batch(
+    urls: list[str],
+    timeout: int = 20,
+    max_chars: int = 500,
+    concurrency: int = 4,
+) -> dict[str, str | None]:
+    return asyncio.run(
+        extraer_bajadas_batch_async(
+            urls,
+            timeout=timeout,
+            max_chars=max_chars,
+            concurrency=concurrency,
+        )
+    )
+
+
 def extraer_bajada(url: str, timeout: int = 20, max_chars: int = 500) -> str | None:
     """
     Extrae una bajada corta desde la URL de la noticia.
     Prioriza og:description, description y JSON-LD.
     Usa un primer párrafo como fallback.
     """
-    try:
-        with httpx.Client(headers=DEFAULT_HEADERS, timeout=timeout, follow_redirects=True) as client:
-            response = client.get(url)
-            response.raise_for_status()
-    except httpx.HTTPError:
-        return None
-
-    raw_html = response.text[:300000]
-
-    for extractor in (_extract_meta_description, _extract_from_json_ld, _extract_first_paragraph):
-        text = extractor(raw_html)
-        if text:
-            return text[:max_chars].strip()
-
-    return None
+    return extraer_bajadas_batch([url], timeout=timeout, max_chars=max_chars, concurrency=1).get(url)

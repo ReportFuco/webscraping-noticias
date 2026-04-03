@@ -1,5 +1,5 @@
 from .date_formater import normalizar_fecha
-from .excerpt import extraer_bajada
+from .excerpt import extraer_bajada, extraer_bajadas_batch
 from .logging_config import setup_logging
 from .scorer import score_noticia
 
@@ -13,6 +13,7 @@ except Exception:
 __all__ = [
     "normalizar_fecha",
     "extraer_bajada",
+    "extraer_bajadas_batch",
     "score_noticia",
     "BotWhatsApp",
     "EvolutionWhatsApp",

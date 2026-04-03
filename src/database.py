@@ -14,6 +14,31 @@ def _run_schema_updates() -> None:
         connection.execute(
             text("ALTER TABLE noticia ADD COLUMN IF NOT EXISTS excerpt TEXT")
         )
+        connection.execute(
+            text(
+                """
+                DO $$
+                BEGIN
+                    IF EXISTS (
+                        SELECT 1
+                        FROM pg_constraint
+                        WHERE conname = 'usuarionoticiavista_noticia_id_fkey'
+                    ) THEN
+                        ALTER TABLE usuarionoticiavista
+                        DROP CONSTRAINT usuarionoticiavista_noticia_id_fkey;
+                    END IF;
+
+                    ALTER TABLE usuarionoticiavista
+                    ADD CONSTRAINT usuarionoticiavista_noticia_id_fkey
+                    FOREIGN KEY (noticia_id)
+                    REFERENCES noticia(id)
+                    ON DELETE CASCADE;
+                EXCEPTION
+                    WHEN duplicate_object THEN NULL;
+                END $$;
+                """
+            )
+        )
 
 
 def create_db():

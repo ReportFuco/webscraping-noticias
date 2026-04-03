@@ -12,27 +12,6 @@ from utils import BotWhatsApp
 
 LOGGER = logging.getLogger(__name__)
 
-DEFAULT_RECIPIENTS = [
-    {"nombre": "Pancho", "whatsapp": "56978086719"},
-    {"nombre": "Gonzalo", "whatsapp": "56942099844"},
-]
-
-
-def asegurar_usuarios_base(session: Session) -> None:
-    for recipient in DEFAULT_RECIPIENTS:
-        existing = session.exec(
-            select(Usuario).where(Usuario.whatsapp == recipient["whatsapp"])
-        ).first()
-        if existing:
-            if existing.nombre != recipient["nombre"]:
-                existing.nombre = recipient["nombre"]
-                session.add(existing)
-            continue
-
-        session.add(Usuario(nombre=recipient["nombre"], whatsapp=recipient["whatsapp"], activo=True))
-
-    session.commit()
-
 
 def _build_message(usuario: Usuario, noticias: Iterable[Noticia]) -> str:
     noticias = list(noticias)
@@ -42,14 +21,15 @@ def _build_message(usuario: Usuario, noticias: Iterable[Noticia]) -> str:
     for idx, noticia in enumerate(noticias, start=1):
         excerpt = (noticia.excerpt or "").strip()
         excerpt_line = f" — {excerpt}" if excerpt else ""
+        fecha = f" | {noticia.date_preview}" if noticia.date_preview else ""
         bloques.append(
-            f"{idx}. {noticia.title} ({noticia.source}){excerpt_line}\n{noticia.url}"
+            f"{idx}. {noticia.title} ({noticia.source}{fecha}){excerpt_line}\n{noticia.url}"
         )
 
     return "\n\n".join(bloques)
 
 
-def obtener_noticias_no_enviadas(session: Session, usuario_id: int, limit: int = 5) -> list[Noticia]:
+def obtener_noticias_no_enviadas(session: Session, usuario_id: int, limit: int = 10) -> list[Noticia]:
     sent_ids = set(
         session.exec(
             select(UsuarioNoticiaVista.noticia_id).where(UsuarioNoticiaVista.usuario_id == usuario_id)
@@ -67,13 +47,16 @@ def registrar_envio(session: Session, usuario_id: int, noticias: Iterable[Notici
     session.commit()
 
 
-def enviar_noticias_pendientes(session: Session, limit_por_usuario: int = 5) -> dict[str, object]:
-    asegurar_usuarios_base(session)
-
+def enviar_noticias_pendientes(session: Session, limit_por_usuario: int = 10) -> dict[str, object]:
     bot = BotWhatsApp(**ENV.EVOLUTION_CREDENCIALS)
     usuarios = session.exec(select(Usuario).where(Usuario.activo == True)).all()
 
     resultado: dict[str, object] = {"usuarios": [], "total_envios": 0}
+
+    if not usuarios:
+        LOGGER.warning("No hay usuarios activos en la base de datos para enviar noticias")
+        resultado["warning"] = "sin_usuarios_activos"
+        return resultado
 
     for usuario in usuarios:
         noticias = obtener_noticias_no_enviadas(session, usuario.id, limit_por_usuario)

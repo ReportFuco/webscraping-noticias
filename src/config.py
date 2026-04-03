@@ -29,10 +29,14 @@ SCRAPERS: list[type[BaseScraper]] = [
     PortalInnovaScraper,
     PublimetroScraper,
     DFScraper,
-    DFLabScraper,
     DFRetailScraper,
     CCSScraper,
     AndaScraper,
+    InfobaeAmericaScraper,
+    CencosudMediosScraper,
+    SMUScraper,
+    GestionScraper,
+    DiarioEstrategiaScraper,
 ]
 SCORE_MINIMO = 2
 

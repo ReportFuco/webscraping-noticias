@@ -3,12 +3,13 @@ import os
 from pathlib import Path
 
 from sqlalchemy.exc import IntegrityError
+from sqlmodel import select
 
 import config as ENV
 from database import create_db, get_session
 from models import Noticia
 from services.news_delivery import enviar_noticias_pendientes
-from utils import extraer_bajada, score_noticia, setup_logging
+from utils import extraer_bajadas_batch, score_noticia, setup_logging
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,10 +38,31 @@ def procesar_noticias() -> dict[str, object]:
 
         nuevas_fuente = 0
 
+        seen_urls_batch: set[str] = set()
+        candidatas = []
+
         for noticia in noticias:
             total_revisadas += 1
 
-            excerpt = extraer_bajada(noticia.url) or noticia.excerpt
+            if noticia.url in seen_urls_batch:
+                LOGGER.debug("Noticia duplicada en lote omitida url=%s", noticia.url)
+                continue
+
+            existing = session.exec(select(Noticia.id).where(Noticia.url == noticia.url)).first()
+            if existing is not None:
+                LOGGER.debug("Noticia ya existe en BD, omitida url=%s", noticia.url)
+                continue
+
+            seen_urls_batch.add(noticia.url)
+            candidatas.append(noticia)
+
+        excerpt_map = extraer_bajadas_batch(
+            [noticia.url for noticia in candidatas],
+            concurrency=4,
+        ) if candidatas else {}
+
+        for noticia in candidatas:
+            excerpt = excerpt_map.get(noticia.url) or noticia.excerpt
             score = score_noticia(
                 noticia.title,
                 noticia.url,
@@ -65,6 +87,7 @@ def procesar_noticias() -> dict[str, object]:
                 session.add(db_noticia)
                 session.commit()
                 session.refresh(db_noticia)
+                seen_urls_batch.add(noticia.url)
                 LOGGER.info(
                     "Noticia guardada fuente=%s score=%s title=%s",
                     noticia.source,
