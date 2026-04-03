@@ -37,6 +37,7 @@ SCRAPERS: list[type[BaseScraper]] = [
     SMUScraper,
     GestionScraper,
     DiarioEstrategiaScraper,
+    LaTerceraPulsoScraper,
 ]
 SCORE_MINIMO = 2
 

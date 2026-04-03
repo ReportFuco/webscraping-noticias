@@ -15,6 +15,43 @@ def _run_schema_updates() -> None:
             text("ALTER TABLE noticia ADD COLUMN IF NOT EXISTS excerpt TEXT")
         )
         connection.execute(
+            text("ALTER TABLE noticia ADD COLUMN IF NOT EXISTS scrape_run_id INTEGER")
+        )
+        connection.execute(
+            text(
+                """
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1
+                        FROM pg_constraint
+                        WHERE conname = 'noticia_scrape_run_id_fkey'
+                    ) THEN
+                        ALTER TABLE noticia
+                        ADD CONSTRAINT noticia_scrape_run_id_fkey
+                        FOREIGN KEY (scrape_run_id)
+                        REFERENCES scraperun(id)
+                        ON DELETE SET NULL;
+                    END IF;
+                EXCEPTION
+                    WHEN duplicate_object THEN NULL;
+                END $$;
+                """
+            )
+        )
+        connection.execute(
+            text("ALTER TABLE usuarionoticiavista ADD COLUMN IF NOT EXISTS estado VARCHAR(50) DEFAULT 'enviado'")
+        )
+        connection.execute(
+            text("ALTER TABLE usuarionoticiavista ADD COLUMN IF NOT EXISTS detalle TEXT")
+        )
+        connection.execute(
+            text("CREATE INDEX IF NOT EXISTS ix_usuarionoticiavista_estado ON usuarionoticiavista (estado)")
+        )
+        connection.execute(
+            text("UPDATE usuarionoticiavista SET estado = COALESCE(estado, 'enviado')")
+        )
+        connection.execute(
             text(
                 """
                 DO $$

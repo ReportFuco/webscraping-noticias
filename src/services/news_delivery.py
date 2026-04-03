@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import datetime, timedelta
 from typing import Iterable
 
 from sqlmodel import Session, select
@@ -11,6 +12,7 @@ from utils import BotWhatsApp
 
 
 LOGGER = logging.getLogger(__name__)
+MAX_NEWS_AGE_DAYS = 4
 
 
 def _build_message(usuario: Usuario, noticias: Iterable[Noticia]) -> str:
@@ -29,6 +31,39 @@ def _build_message(usuario: Usuario, noticias: Iterable[Noticia]) -> str:
     return "\n\n".join(bloques)
 
 
+def _parse_news_date(noticia: Noticia) -> datetime | None:
+    if not noticia.date_preview:
+        return None
+    try:
+        return datetime.strptime(noticia.date_preview, "%d/%m/%Y")
+    except ValueError:
+        return None
+
+
+def registrar_huella_no_enviada(
+    session: Session,
+    usuario_id: int,
+    noticias: Iterable[Noticia],
+    estado: str,
+    detalle: str | None = None,
+) -> int:
+    count = 0
+    for noticia in noticias:
+        session.add(
+            UsuarioNoticiaVista(
+                usuario_id=usuario_id,
+                noticia_id=noticia.id,
+                visto=True,
+                visto_at=datetime.now(),
+                estado=estado,
+                detalle=detalle,
+            )
+        )
+        count += 1
+    session.commit()
+    return count
+
+
 def obtener_noticias_no_enviadas(session: Session, usuario_id: int, limit: int = 10) -> list[Noticia]:
     sent_ids = set(
         session.exec(
@@ -38,12 +73,46 @@ def obtener_noticias_no_enviadas(session: Session, usuario_id: int, limit: int =
 
     statement = select(Noticia).order_by(Noticia.created_at.desc())
     noticias = session.exec(statement).all()
-    return [noticia for noticia in noticias if noticia.id not in sent_ids][:limit]
+    pendientes = [noticia for noticia in noticias if noticia.id not in sent_ids]
+
+    cutoff = datetime.now() - timedelta(days=MAX_NEWS_AGE_DAYS)
+    vencidas: list[Noticia] = []
+    recientes: list[Noticia] = []
+
+    for noticia in pendientes:
+        noticia_dt = _parse_news_date(noticia)
+        if noticia_dt is not None and noticia_dt < cutoff:
+            vencidas.append(noticia)
+        else:
+            recientes.append(noticia)
+
+    if vencidas:
+        marcadas = registrar_huella_no_enviada(
+            session,
+            usuario_id,
+            vencidas,
+            estado="omitida_antigua",
+            detalle=f"No enviada por antigüedad > {MAX_NEWS_AGE_DAYS} días",
+        )
+        LOGGER.info(
+            "Marcadas como omitidas por antigüedad usuario_id=%s cantidad=%s",
+            usuario_id,
+            marcadas,
+        )
+
+    return recientes[:limit]
 
 
 def registrar_envio(session: Session, usuario_id: int, noticias: Iterable[Noticia]) -> None:
     for noticia in noticias:
-        session.add(UsuarioNoticiaVista(usuario_id=usuario_id, noticia_id=noticia.id, visto=False))
+        session.add(
+            UsuarioNoticiaVista(
+                usuario_id=usuario_id,
+                noticia_id=noticia.id,
+                visto=False,
+                estado="enviado",
+            )
+        )
     session.commit()
 
 

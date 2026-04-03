@@ -11,3 +11,5 @@ class UsuarioNoticiaVista(SQLModel, table=True):
     visto: bool = Field(default=False)
     enviado_at: datetime = Field(default_factory=datetime.now)
     visto_at: Optional[datetime] = Field(default=None)
+    estado: str = Field(default="enviado", index=True)
+    detalle: Optional[str] = Field(default=None)
