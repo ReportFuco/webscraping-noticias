@@ -21,29 +21,25 @@ Hoy el proyecto ya incluye:
 - **envío por WhatsApp** con límite actual de **10 noticias por usuario**
 - relación de vistas/envíos con **`ON DELETE CASCADE`** para limpiar referencias al borrar noticias
 
-## Fuentes activas
+## Cobertura de fuentes
 
-Actualmente el scraper considera estas fuentes:
-- Meganoticias
-- BioBioChile
-- The Clinic
-- El Mostrador
-- Walmart Chile
-- Portal Innova
-- Publimetro
-- Diario Financiero (`df`)
-- DF Retail (`dfretail`)
-- CCS
-- ANDA
-- Infobae América
-- Cencosud Centro de Medios
-- SMU Noticias
-- Gestión
-- Diario Estrategia
+Actualmente el proyecto combina scrapers de:
+- medios generalistas
+- prensa económica y de negocios
+- sitios corporativos y centros de medios
+- gremios, asociaciones y actores del ecosistema retail
+
+La cobertura está pensada para capturar señales de:
+- supermercados y retail
+- consumo masivo
+- aperturas/cierres
+- resultados financieros
+- logística comercial
+- inversión y expansión
 
 ### Nota
+- algunas fuentes pueden requerir ajustes puntuales con el tiempo por cambios de HTML, rate limiting o bloqueos anti-bot.
 - `DFLab` fue retirado de la ejecución activa, pero su clase no fue eliminada del código.
-- `The Clinic` sigue siendo una fuente delicada por bloqueos/403 en algunas URLs.
 
 ## Estructura
 
@@ -95,7 +91,8 @@ APIKEY_EVOLUTION=
 ## Instalación local
 
 ```bash
-cd /root/.openclaw/workspace/webscraping-noticias
+git clone https://github.com/ReportFuco/webscraping-noticias.git
+cd webscraping-noticias
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -113,7 +110,7 @@ docker compose -f compose.yaml up -d
 ## Ejecutar scraper
 
 ```bash
-cd /root/.openclaw/workspace/webscraping-noticias
+cd webscraping-noticias
 ./scripts/run_scraper.sh
 ```
 
@@ -132,7 +129,7 @@ Ver `CRON.md`.
 Ejemplo:
 
 ```cron
-0 */3 * * * cd /root/.openclaw/workspace/webscraping-noticias && ./scripts/run_scraper.sh >> /root/.openclaw/workspace/webscraping-noticias/logs/cron.log 2>&1
+0 */3 * * * cd /ruta/a/webscraping-noticias && ./scripts/run_scraper.sh >> /ruta/a/webscraping-noticias/logs/cron.log 2>&1
 ```
 
 ## Modelo de datos principal
