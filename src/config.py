@@ -39,7 +39,7 @@ SCRAPERS: list[type[BaseScraper]] = [
     DiarioEstrategiaScraper,
     LaTerceraPulsoScraper,
 ]
-SCORE_MINIMO = 2
+SCORE_MINIMO = 3
 
 __all__=[
     "DATABASE_USER", "DATABASE_PASSWORD", "DATABASE_NAME", "DATABASE_HOST", "DATABASE_PORT",

@@ -4,6 +4,7 @@ from io import BytesIO
 from typing import Literal
 import base64
 import logging
+from pathlib import Path
 
 import httpx
 
@@ -142,6 +143,44 @@ class BotWhatsApp:
             "mediatype": "image",
             "number": numero,
             "mimetype": mimetype,
+        }
+        if delay is not None:
+            payload["delay"] = delay
+        return self._post(f"/message/sendMedia/{self.instance}", payload)
+
+    def enviar_documento(
+        self,
+        numero: str,
+        path_archivo: str | None = None,
+        buffer: BytesIO | None = None,
+        file_name: str | None = None,
+        caption: str = "",
+        delay: int | None = None,
+        mimetype: str = "application/octet-stream",
+    ) -> dict[Literal["ok", "status_code", "data", "error"], object]:
+        if path_archivo and buffer:
+            raise ValueError("Solo puedes proporcionar 'path_archivo' o 'buffer', no ambos.")
+        if not path_archivo and not buffer:
+            raise ValueError("Debes proporcionar al menos 'path_archivo' o 'buffer'.")
+
+        if buffer:
+            if not file_name:
+                raise ValueError("Si usas 'buffer', debes indicar 'file_name'.")
+            buffer.seek(0)
+            media = base64.b64encode(buffer.read()).decode("utf-8")
+        else:
+            with open(path_archivo, "rb") as file:
+                media = base64.b64encode(file.read()).decode("utf-8")
+            if not file_name:
+                file_name = Path(path_archivo).name
+
+        payload = {
+            "number": numero,
+            "mediatype": "document",
+            "mimetype": mimetype,
+            "caption": caption,
+            "media": media,
+            "fileName": file_name,
         }
         if delay is not None:
             payload["delay"] = delay
