@@ -43,7 +43,6 @@ Object.defineProperty(navigator, 'languages', {get: () => ['es-CL', 'es', 'en-US
             """)
 
             page.goto(self.URL, wait_until="domcontentloaded", timeout=60000)
-            page.wait_for_timeout(5000)
             page.wait_for_selector("section.listado-seccion article", timeout=30000)
 
             articles = page.locator("section.listado-seccion article")

@@ -94,7 +94,6 @@ class LaTerceraPulsoScraper(BaseScraper):
             context = browser.new_context(user_agent=self.USER_AGENT, locale="es-CL")
             page = context.new_page()
             page.goto(self.URL, wait_until="domcontentloaded", timeout=60000)
-            page.wait_for_timeout(2500)
             raw_html = page.content()
             browser.close()
 

@@ -50,7 +50,6 @@ class SMUScraper(BaseScraper):
             )
             page = context.new_page()
             page.goto(self.URL, wait_until="domcontentloaded", timeout=60000)
-            page.wait_for_timeout(1500)
             raw_html = page.content()
             browser.close()
 
