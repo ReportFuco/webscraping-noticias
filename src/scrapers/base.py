@@ -6,6 +6,7 @@ from schemas import NoticiaSchema
 
 class BaseScraper(ABC):
     source: str
+    country: str = "CL"
 
     @property
     def logger(self) -> logging.Logger:

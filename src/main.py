@@ -11,6 +11,7 @@ from database import create_db, get_session
 from models import Noticia, ScrapeRun, ScrapeRunSource
 from services.news_delivery import enviar_noticias_pendientes
 from utils import extraer_bajadas_batch, score_noticia, setup_logging
+from utils.date_formater import parse_date_preview
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -98,8 +99,10 @@ def procesar_noticias(trigger: str = "manual") -> dict[str, object]:
                     img=noticia.img,
                     date_preview=noticia.date_preview,
                     source=noticia.source,
+                    country=noticia.country,
                     excerpt=excerpt,
                     score=score,
+                    published_date=parse_date_preview(str(noticia.date_preview)),
                 )
 
                 try:

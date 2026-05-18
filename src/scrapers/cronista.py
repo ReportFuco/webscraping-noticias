@@ -12,10 +12,10 @@ from .base import BaseScraper
 from schemas import NoticiaSchema
 
 
-class GestionScraper(BaseScraper):
-    source = "gestion"
-    country = "PE"
-    URL = "https://gestion.pe/arcio/rss/"
+class CronistaScraper(BaseScraper):
+    source = "cronista"
+    country = "AR"
+    URL = "https://www.cronista.com/arc/outboundfeeds/rss/category/negocios/"
     HEADERS = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "

@@ -12,10 +12,10 @@ from .base import BaseScraper
 from schemas import NoticiaSchema
 
 
-class GestionScraper(BaseScraper):
-    source = "gestion"
-    country = "PE"
-    URL = "https://gestion.pe/arcio/rss/"
+class ValoraAnalitikScraper(BaseScraper):
+    source = "valoraanalitik"
+    country = "CO"
+    URL = "https://www.valoraanalitik.com/feed/"
     HEADERS = {
         "User-Agent": (
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -38,6 +38,12 @@ class GestionScraper(BaseScraper):
         if not value:
             return None
         value = value.strip()
+        # WordPress format: "2026-05-18 19:30:00"
+        try:
+            return datetime.strptime(value, "%Y-%m-%d %H:%M:%S").strftime("%d/%m/%Y")
+        except ValueError:
+            pass
+        # Fallback: standard RSS RFC 2822
         for fmt in ("%a, %d %b %Y %H:%M:%S %z", "%a, %d %b %Y %H:%M:%S GMT"):
             try:
                 return datetime.strptime(value, fmt).strftime("%d/%m/%Y")

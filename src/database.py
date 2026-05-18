@@ -1,87 +1,23 @@
-from sqlmodel import SQLModel, create_engine, Session
-from sqlalchemy import text
-from config import *
+from pathlib import Path
 
+from alembic import command
+from alembic.config import Config
+from sqlmodel import Session, create_engine
+
+from config import DATABASE_HOST, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_USER
 
 DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
 engine = create_engine(DATABASE_URL, echo=False)
 
-
-def _run_schema_updates() -> None:
-    """Aplica cambios simples de esquema sin requerir recrear la base."""
-    with engine.begin() as connection:
-        connection.execute(
-            text("ALTER TABLE noticia ADD COLUMN IF NOT EXISTS excerpt TEXT")
-        )
-        connection.execute(
-            text("ALTER TABLE noticia ADD COLUMN IF NOT EXISTS scrape_run_id INTEGER")
-        )
-        connection.execute(
-            text(
-                """
-                DO $$
-                BEGIN
-                    IF NOT EXISTS (
-                        SELECT 1
-                        FROM pg_constraint
-                        WHERE conname = 'noticia_scrape_run_id_fkey'
-                    ) THEN
-                        ALTER TABLE noticia
-                        ADD CONSTRAINT noticia_scrape_run_id_fkey
-                        FOREIGN KEY (scrape_run_id)
-                        REFERENCES scraperun(id)
-                        ON DELETE SET NULL;
-                    END IF;
-                EXCEPTION
-                    WHEN duplicate_object THEN NULL;
-                END $$;
-                """
-            )
-        )
-        connection.execute(
-            text("ALTER TABLE usuarionoticiavista ADD COLUMN IF NOT EXISTS estado VARCHAR(50) DEFAULT 'enviado'")
-        )
-        connection.execute(
-            text("ALTER TABLE usuarionoticiavista ADD COLUMN IF NOT EXISTS detalle TEXT")
-        )
-        connection.execute(
-            text("CREATE INDEX IF NOT EXISTS ix_usuarionoticiavista_estado ON usuarionoticiavista (estado)")
-        )
-        connection.execute(
-            text("UPDATE usuarionoticiavista SET estado = COALESCE(estado, 'enviado')")
-        )
-        connection.execute(
-            text(
-                """
-                DO $$
-                BEGIN
-                    IF EXISTS (
-                        SELECT 1
-                        FROM pg_constraint
-                        WHERE conname = 'usuarionoticiavista_noticia_id_fkey'
-                    ) THEN
-                        ALTER TABLE usuarionoticiavista
-                        DROP CONSTRAINT usuarionoticiavista_noticia_id_fkey;
-                    END IF;
-
-                    ALTER TABLE usuarionoticiavista
-                    ADD CONSTRAINT usuarionoticiavista_noticia_id_fkey
-                    FOREIGN KEY (noticia_id)
-                    REFERENCES noticia(id)
-                    ON DELETE CASCADE;
-                EXCEPTION
-                    WHEN duplicate_object THEN NULL;
-                END $$;
-                """
-            )
-        )
+_BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-def create_db():
-    """Crea tablas y aplica ajustes de esquema si no existen."""
-    SQLModel.metadata.create_all(engine)
-    _run_schema_updates()
+def create_db() -> None:
+    """Aplica todas las migraciones pendientes vía Alembic."""
+    cfg = Config(str(_BASE_DIR / "alembic.ini"))
+    cfg.set_main_option("sqlalchemy.url", DATABASE_URL)
+    command.upgrade(cfg, "head")
 
 
 def get_session():

@@ -1,6 +1,5 @@
-# utils.py
 import re
-from datetime import datetime
+from datetime import date, datetime
 
 
 def normalizar_fecha(fecha_str: str) -> str:
@@ -42,17 +41,36 @@ def normalizar_fecha(fecha_str: str) -> str:
     # Caso 3: Ya está en formato DD/MM/YYYY
     if re.match(r'\d{2}/\d{2}/\d{4}', fecha_str):
         return fecha_str
-    
-    # Caso 4: Fallback - intentar parsear con datetime
+
+    # Caso 4: "Abr 17", "May 04" — mes abreviado + día sin año (Meganoticias)
+    month_day_match = re.match(r'^([A-Za-záéíóúÁÉÍÓÚ]{3,4})\s+(\d{1,2})$', fecha_str)
+    if month_day_match:
+        month_str, day = month_day_match.groups()
+        month = meses.get(month_str.lower(), None)
+        if month:
+            year = str(datetime.now().year)
+            return f"{day.zfill(2)}/{month}/{year}"
+
+    # Caso 5: Fallback - intentar parsear con datetime
     try:
-        # Intenta varios formatos comunes
         for fmt in ["%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y"]:
             try:
                 dt = datetime.strptime(fecha_str, fmt)
                 return dt.strftime("%d/%m/%Y")
             except ValueError:
                 continue
-    except:
+    except Exception:
         pass
-    
+
     return fecha_str
+
+
+def parse_date_preview(date_preview: str | None) -> date | None:
+    """Convierte date_preview (DD/MM/YYYY) a un objeto date. Retorna None si no parsea."""
+    if not date_preview:
+        return None
+    normalizada = normalizar_fecha(date_preview)
+    try:
+        return datetime.strptime(normalizada, "%d/%m/%Y").date()
+    except ValueError:
+        return None

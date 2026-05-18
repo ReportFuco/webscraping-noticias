@@ -38,6 +38,8 @@ SCRAPERS: list[type[BaseScraper]] = [
     GestionScraper,
     DiarioEstrategiaScraper,
     LaTerceraPulsoScraper,
+    CronistaScraper,
+    ValoraAnalitikScraper,
 ]
 SCORE_MINIMO = 3
 

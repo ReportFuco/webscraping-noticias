@@ -4,6 +4,7 @@ import argparse
 import csv
 import os
 from datetime import datetime
+from io import BytesIO
 from pathlib import Path
 
 import config as ENV
@@ -11,7 +12,6 @@ from utils import BotWhatsApp, extraer_bajadas_batch, score_noticia, setup_loggi
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-EXPORTS_DIR = BASE_DIR / "exports"
 DEFAULT_DESTINATION = "56978086719"
 
 
@@ -27,6 +27,7 @@ def _build_rows() -> list[dict[str, str | int]]:
             rows.append(
                 {
                     "source": scraper.source,
+                    "country": scraper.country,
                     "title": f"[ERROR] {exc}",
                     "url": "",
                     "date_preview": "",
@@ -57,6 +58,7 @@ def _build_rows() -> list[dict[str, str | int]]:
             rows.append(
                 {
                     "source": noticia.source,
+                    "country": noticia.country,
                     "title": noticia.title,
                     "url": noticia.url,
                     "date_preview": noticia.date_preview or "",
@@ -77,14 +79,13 @@ def _build_rows() -> list[dict[str, str | int]]:
     return rows
 
 
-def _write_csv(rows: list[dict[str, str | int]]) -> Path:
-    EXPORTS_DIR.mkdir(parents=True, exist_ok=True)
+def _build_csv_buffer(rows: list[dict[str, str | int]]) -> tuple[BytesIO, str]:
     now = datetime.now()
     filename = f"scrape-review-{now.strftime('%Y-%m-%d-%H%M%S')}.csv"
-    path = EXPORTS_DIR / filename
 
     fieldnames = [
         "source",
+        "country",
         "title",
         "url",
         "date_preview",
@@ -93,28 +94,33 @@ def _write_csv(rows: list[dict[str, str | int]]) -> Path:
         "would_pass_filter",
     ]
 
-    with path.open("w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.DictWriter(
-            f,
-            fieldnames=fieldnames,
-            delimiter=";",
-            quoting=csv.QUOTE_MINIMAL,
-        )
-        writer.writeheader()
-        writer.writerows(rows)
-
-    return path
+    text_buffer = BytesIO()
+    content = []
+    import io
+    string_buffer = io.StringIO()
+    writer = csv.DictWriter(
+        string_buffer,
+        fieldnames=fieldnames,
+        delimiter=";",
+        quoting=csv.QUOTE_MINIMAL,
+    )
+    writer.writeheader()
+    writer.writerows(rows)
+    content = string_buffer.getvalue().encode("utf-8-sig")
+    text_buffer.write(content)
+    text_buffer.seek(0)
+    return text_buffer, filename
 
 
 def main(destination: str = DEFAULT_DESTINATION, send: bool = True) -> int:
     rows = _build_rows()
-    csv_path = _write_csv(rows)
+    csv_buffer, file_name = _build_csv_buffer(rows)
 
     total = len(rows)
     passing = sum(1 for row in rows if row["would_pass_filter"] == "yes")
     errors = sum(1 for row in rows if row["would_pass_filter"] == "error")
 
-    print(f"CSV generado: {csv_path}")
+    print(f"CSV generado en memoria: {file_name}")
     print(f"Total filas: {total}")
     print(f"Pasan filtro: {passing}")
     print(f"Errores fuente: {errors}")
@@ -129,8 +135,8 @@ def main(destination: str = DEFAULT_DESTINATION, send: bool = True) -> int:
     )
     response = bot.enviar_documento(
         numero=destination,
-        path_archivo=str(csv_path),
-        file_name=csv_path.name,
+        buffer=csv_buffer,
+        file_name=file_name,
         caption=caption,
         mimetype="text/csv",
     )

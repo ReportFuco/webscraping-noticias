@@ -7,3 +7,6 @@ httpx
 sqlalchemy
 sqlmodel
 invoke
+fastapi
+uvicorn[standard]
+alembic

@@ -16,6 +16,8 @@ from .smu import SMUScraper
 from .gestion import GestionScraper
 from .diarioestrategia import DiarioEstrategiaScraper
 from .latercera_pulso import LaTerceraPulsoScraper
+from .cronista import CronistaScraper
+from .valoraanalitik import ValoraAnalitikScraper
 from .base import BaseScraper
 
 
@@ -26,5 +28,5 @@ __all__ = [
     "CCSScraper",
     "AndaScraper", "InfobaeAmericaScraper", "CencosudMediosScraper",
     "SMUScraper", "GestionScraper", "DiarioEstrategiaScraper",
-    "LaTerceraPulsoScraper", "BaseScraper"
+    "LaTerceraPulsoScraper", "CronistaScraper", "ValoraAnalitikScraper", "BaseScraper"
 ]

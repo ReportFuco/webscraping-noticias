@@ -8,4 +8,5 @@ class NoticiaSchema(BaseModel):
     img: str
     date_preview: datetime | str
     source: str
+    country: str = "CL"
     excerpt: str | None = None

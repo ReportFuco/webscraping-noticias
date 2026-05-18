@@ -14,6 +14,7 @@ from schemas import NoticiaSchema
 
 class InfobaeAmericaScraper(BaseScraper):
     source = "infobaeamerica"
+    country = "AR"
     URL = "https://www.infobae.com/arc/outboundfeeds/rss/category/america/mundo/"
     HEADERS = {
         "User-Agent": (
@@ -89,6 +90,7 @@ class InfobaeAmericaScraper(BaseScraper):
                     img=img,
                     date_preview=date_preview,
                     source=self.source,
+                    country=self.country,
                     excerpt=excerpt,
                 )
             )
