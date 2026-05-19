@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List
 from .base import BaseScraper
 from schemas import NoticiaSchema
@@ -9,25 +10,22 @@ class WalmartChileScraper(BaseScraper):
     source = "walmartchile"
     URL = "https://www.walmartchile.cl/category/noticias/"
 
-    def _parse_date(self, date_text: str) -> str:
-        """
-        Convierte 'Feb. 10 2026' a '10/02/2026'
-        """
+    def _parse_date(self, date_text: str) -> date | None:
         months = {
-            "ene": "01", "feb": "02", "mar": "03", "abr": "04",
-            "may": "05", "jun": "06", "jul": "07", "ago": "08",
-            "sep": "09", "oct": "10", "nov": "11", "dic": "12"
+            "ene": 1, "feb": 2, "mar": 3, "abr": 4,
+            "may": 5, "jun": 6, "jul": 7, "ago": 8,
+            "sep": 9, "oct": 10, "nov": 11, "dic": 12,
         }
-        
-        # Limpia y separa: "Feb. 10 2026" -> ["feb", "10", "2026"]
         parts = re.sub(r'[.,]', '', date_text.lower()).split()
-        
         if len(parts) == 3:
             month_str, day, year = parts
-            month = months.get(month_str[:3], "01")
-            return f"{day.zfill(2)}/{month}/{year}"
-        
-        return date_text  # fallback si no se puede parsear
+            month = months.get(month_str[:3])
+            if month:
+                try:
+                    return date(int(year), month, int(day))
+                except ValueError:
+                    pass
+        return None
 
     def fetch(self) -> List[NoticiaSchema]:
         noticias: List[NoticiaSchema] = []

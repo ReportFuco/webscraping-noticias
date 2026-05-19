@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import html
 import re
-from datetime import datetime
+from datetime import date, datetime
 from typing import List
 from xml.etree import ElementTree as ET
 
@@ -33,13 +33,13 @@ class DiarioEstrategiaScraper(BaseScraper):
         text = re.sub(r"\s+", " ", text).strip()
         return text or None
 
-    def _parse_pub_date(self, value: str | None) -> str | None:
+    def _parse_pub_date(self, value: str | None) -> date | None:
         if not value:
             return None
         value = value.strip()
         for fmt in ("%a, %d %b %Y %H:%M:%S %z", "%a, %d %b %Y %H:%M:%S GMT"):
             try:
-                return datetime.strptime(value, fmt).strftime("%d/%m/%Y")
+                return datetime.strptime(value, fmt).date()
             except ValueError:
                 continue
         return None

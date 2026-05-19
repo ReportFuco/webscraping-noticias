@@ -22,3 +22,9 @@ async def verify_api_key(
     if not user:
         raise HTTPException(status_code=401, detail="API key inválida")
     return user
+
+
+async def verify_superuser(user: User = Depends(verify_api_key)) -> User:
+    if not user.is_superuser:
+        raise HTTPException(status_code=403, detail="Se requiere superuser")
+    return user

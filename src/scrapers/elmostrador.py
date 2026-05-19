@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List
 from .base import BaseScraper
 from schemas import NoticiaSchema
@@ -9,12 +10,14 @@ class ElMostradorScraper(BaseScraper):
     source = "elmostrador"
     URL = "https://www.elmostrador.cl/mercados/"
 
-    def _extract_date_from_url(self, url: str) -> str | None:
-        """Extrae la fecha del URL con formato /YYYY/MM/DD/"""
+    def _extract_date_from_url(self, url: str) -> date | None:
         match = re.search(r'/(\d{4})/(\d{2})/(\d{2})/', url)
         if match:
             year, month, day = match.groups()
-            return f"{day}/{month}/{year}"
+            try:
+                return date(int(year), int(month), int(day))
+            except ValueError:
+                pass
         return None
 
     def fetch(self) -> List[NoticiaSchema]:

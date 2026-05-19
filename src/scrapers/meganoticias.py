@@ -1,6 +1,7 @@
+from datetime import date
+from typing import List, Optional
 from .base import BaseScraper
 from playwright.sync_api import sync_playwright
-from typing import List, Optional
 from schemas import NoticiaSchema
 from utils import normalizar_fecha
 import re
@@ -10,12 +11,14 @@ class MeganoticiasScraper(BaseScraper):
     source = "Meganoticias"
     url = "https://www.meganoticias.cl/nacional/"
 
-    def _extract_date_from_url(self, url: str) -> Optional[str]:
-        """Extrae la fecha del URL con formato DD-MM-YYYY al final"""
+    def _extract_date_from_url(self, url: str) -> "Optional[date]":
         match = re.search(r'(\d{2})-(\d{2})-(\d{4})\.html$', url)
         if match:
             day, month, year = match.groups()
-            return f"{day}/{month}/{year}"
+            try:
+                return date(int(year), int(month), int(day))
+            except ValueError:
+                pass
         return None
 
     def fetch(self) -> List[NoticiaSchema]:

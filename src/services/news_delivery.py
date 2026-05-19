@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from typing import Iterable
 
 from sqlalchemy import select
@@ -24,7 +24,7 @@ def _build_message(usuario: Usuario, noticias: Iterable[Noticia]) -> str:
     for idx, noticia in enumerate(noticias, start=1):
         excerpt = (noticia.excerpt or "").strip()
         excerpt_line = f" — {excerpt}" if excerpt else ""
-        fecha = f" | {noticia.date_preview}" if noticia.date_preview else ""
+        fecha = f" | {noticia.date_preview.strftime('%d/%m/%Y')}" if noticia.date_preview else ""
         bloques.append(
             f"{idx}. {noticia.title} ({noticia.source}{fecha}){excerpt_line}\n{noticia.url}"
         )
@@ -35,10 +35,7 @@ def _build_message(usuario: Usuario, noticias: Iterable[Noticia]) -> str:
 def _parse_news_date(noticia: Noticia) -> datetime | None:
     if not noticia.date_preview:
         return None
-    try:
-        return datetime.strptime(noticia.date_preview, "%d/%m/%Y")
-    except ValueError:
-        return None
+    return datetime(noticia.date_preview.year, noticia.date_preview.month, noticia.date_preview.day)
 
 
 def registrar_huella_no_enviada(

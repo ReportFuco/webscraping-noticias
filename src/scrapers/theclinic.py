@@ -1,3 +1,4 @@
+from datetime import date
 from playwright.sync_api import sync_playwright
 from .base import BaseScraper
 from schemas import NoticiaSchema
@@ -8,12 +9,14 @@ class TheClinicScraper(BaseScraper):
     source = "theclinic"
     URL = "https://www.theclinic.cl/noticias/negocios/"
 
-    def _extract_date_from_url(self, url: str) -> str | None:
-        """Extrae la fecha del URL con formato /YYYY/MM/DD/"""
+    def _extract_date_from_url(self, url: str) -> date | None:
         match = re.search(r'/(\d{4})/(\d{2})/(\d{2})/', url)
         if match:
             year, month, day = match.groups()
-            return f"{day}/{month}/{year}"
+            try:
+                return date(int(year), int(month), int(day))
+            except ValueError:
+                pass
         return None
 
     def fetch(self) -> list[NoticiaSchema]:

@@ -14,7 +14,6 @@ from models import Noticia, ScrapeRun, ScrapeRunSource
 from schemas import NoticiaSchema
 from services.news_delivery import enviar_noticias_pendientes
 from utils import extraer_bajadas_batch, score_noticia, setup_logging
-from utils.date_formater import parse_date_preview
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -149,7 +148,6 @@ def procesar_noticias(trigger: str = "manual") -> dict[str, object]:
                     country=noticia.country,
                     excerpt=excerpt,
                     score=score,
-                    published_date=parse_date_preview(str(noticia.date_preview)),
                 )
 
                 try:
@@ -209,9 +207,9 @@ def procesar_noticias(trigger: str = "manual") -> dict[str, object]:
 
 
 if __name__ == "__main__":
+    create_db()
     setup_logging(
         log_level=os.getenv("LOG_LEVEL", "INFO"),
         log_file=os.getenv("LOG_FILE", str(DEFAULT_LOG_FILE)),
     )
-    create_db()
     procesar_noticias(trigger=os.getenv("SCRAPER_TRIGGER", "manual"))

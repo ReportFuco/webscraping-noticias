@@ -17,10 +17,9 @@ class Noticia(Base):
     title: Mapped[str]
     url: Mapped[str] = mapped_column(unique=True, index=True)
     img: Mapped[str]
-    date_preview: Mapped[str]
+    date_preview: Mapped[Optional[date]] = mapped_column(index=True)
     source: Mapped[str]
     country: Mapped[str] = mapped_column(String, default="CL")
     excerpt: Mapped[Optional[str]]
     score: Mapped[int] = mapped_column(default=0)
-    published_date: Mapped[Optional[date]] = mapped_column(index=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.now)

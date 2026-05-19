@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List
 import re
 
@@ -28,13 +29,16 @@ class DFLabScraper(BaseScraper):
             return f"https://www.df.cl{value}"
         return f"https://www.df.cl/{value.lstrip('/')}"
 
-    def _extract_date_from_image_url(self, img_url: str | None) -> str | None:
+    def _extract_date_from_image_url(self, img_url: str | None) -> date | None:
         if not img_url:
             return None
         match = re.search(r"/site/artic/(\d{4})(\d{2})(\d{2})/", img_url)
         if match:
             year, month, day = match.groups()
-            return f"{day}/{month}/{year}"
+            try:
+                return date(int(year), int(month), int(day))
+            except ValueError:
+                pass
         return None
 
     def _clean_text(self, value: str | None) -> str | None:

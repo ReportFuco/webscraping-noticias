@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from api.routers import noticias
+from api.routers import noticias, scraper
 from api.users import UserCreate, UserRead, UserUpdate, auth_backend, fastapi_users_app
 from database import create_db
 
@@ -21,6 +21,7 @@ app = FastAPI(
 )
 
 app.include_router(noticias.router)
+app.include_router(scraper.router)
 
 app.include_router(
     fastapi_users_app.get_auth_router(auth_backend),

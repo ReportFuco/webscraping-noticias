@@ -151,12 +151,11 @@ Lista noticias con paginación y filtros opcionales. Ordenadas por fecha de publ
       "title": "Walmart Chile abre nuevo local en Maipú",
       "url": "https://...",
       "img": "https://...",
-      "date_preview": "19 mayo 2026",
+      "date_preview": "2026-05-19",
       "source": "walmartchile",
       "country": "CL",
       "excerpt": "La cadena de supermercados anunció...",
       "score": 12,
-      "published_date": "2026-05-19",
       "created_at": "2026-05-19T08:30:00"
     }
   ]
@@ -213,13 +212,34 @@ Actualiza el título o el excerpt de una noticia. Útil para correcciones editor
 | `title` | string | Titular del artículo |
 | `url` | string | URL original (único) |
 | `img` | string | URL de imagen de portada |
-| `date_preview` | string | Fecha en texto tal como viene del scraper (no normalizada) |
+| `date_preview` | date \| null | Fecha de publicación parseada (`YYYY-MM-DD`); null si el scraper no pudo determinarla |
 | `source` | string | Identificador del scraper de origen |
 | `country` | string | País (`"CL"` por defecto) |
 | `excerpt` | string \| null | Bajada/resumen del artículo |
 | `score` | int | Puntuación de relevancia (scorer interno) |
-| `published_date` | date \| null | Fecha de publicación parseada |
 | `created_at` | datetime | Timestamp de ingesta en el sistema |
+
+---
+
+### Scraper
+
+> Requiere autenticación JWT (`Authorization: Bearer <token>`) de un usuario con `is_superuser = true`.
+
+#### `POST /scraper/run`
+
+Dispara el pipeline completo de scraping en background y responde inmediatamente. El proceso corre de forma asíncrona: la respuesta llega antes de que el scraping termine.
+
+**Respuesta `200`:**
+```json
+{
+  "status": "started",
+  "message": "Scraping iniciado en background"
+}
+```
+
+**Errores:**
+- `401` — token ausente o inválido
+- `403` — usuario no es superuser
 
 ---
 
