@@ -1,17 +1,21 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlmodel import Field, SQLModel
+from sqlalchemy.orm import Mapped, mapped_column
+
+from models.base import Base
 
 
-class ScrapeRun(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    started_at: datetime = Field(default_factory=datetime.now, index=True)
-    finished_at: Optional[datetime] = Field(default=None, index=True)
-    status: str = Field(default="running", index=True)
-    trigger: str = Field(default="manual", index=True)
-    total_sources: int = Field(default=0)
-    total_reviewed: int = Field(default=0)
-    total_new: int = Field(default=0)
-    total_errors: int = Field(default=0)
-    notes: Optional[str] = Field(default=None)
+class ScrapeRun(Base):
+    __tablename__ = "scraperun"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    started_at: Mapped[datetime] = mapped_column(default=datetime.now, index=True)
+    finished_at: Mapped[Optional[datetime]] = mapped_column(index=True)
+    status: Mapped[str] = mapped_column(default="running", index=True)
+    trigger: Mapped[str] = mapped_column(default="manual", index=True)
+    total_sources: Mapped[int] = mapped_column(default=0)
+    total_reviewed: Mapped[int] = mapped_column(default=0)
+    total_new: Mapped[int] = mapped_column(default=0)
+    total_errors: Mapped[int] = mapped_column(default=0)
+    notes: Mapped[Optional[str]]

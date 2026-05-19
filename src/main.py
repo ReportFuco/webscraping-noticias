@@ -4,8 +4,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
-from sqlmodel import col, select
 
 import config as ENV
 from scrapers.base import BaseScraper
@@ -20,8 +20,6 @@ from utils.date_formater import parse_date_preview
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_LOG_FILE = BASE_DIR / "logs" / "news_scraper.log"
 LOGGER = logging.getLogger("news_scraper")
-
-_MAX_SCRAPER_WORKERS = 10
 
 
 def _run_scraper(ScraperClass: type[BaseScraper]) -> tuple[str, list[NoticiaSchema], Exception | None]:
@@ -51,12 +49,12 @@ def procesar_noticias(trigger: str = "manual") -> dict[str, object]:
     LOGGER.info(
         "Iniciando proceso de scraping con %s fuentes (paralelo, workers=%s)",
         len(ENV.SCRAPERS),
-        min(len(ENV.SCRAPERS), _MAX_SCRAPER_WORKERS),
+        min(len(ENV.SCRAPERS), ENV.MAX_SCRAPER_WORKERS),
     )
 
     # Phase 1: run all scrapers concurrently
     raw_results: dict[str, tuple[list[NoticiaSchema], Exception | None]] = {}
-    with ThreadPoolExecutor(max_workers=min(len(ENV.SCRAPERS), _MAX_SCRAPER_WORKERS)) as pool:
+    with ThreadPoolExecutor(max_workers=min(len(ENV.SCRAPERS), ENV.MAX_SCRAPER_WORKERS)) as pool:
         futures = {pool.submit(_run_scraper, cls): cls for cls in ENV.SCRAPERS}
         for future in as_completed(futures):
             source, noticias, error = future.result()
@@ -81,7 +79,7 @@ def procesar_noticias(trigger: str = "manual") -> dict[str, object]:
     existing_urls: set[str] = set()
     if all_candidate_urls:
         existing_urls = set(
-            session.exec(select(Noticia.url).where(col(Noticia.url).in_(all_candidate_urls))).all()
+            session.execute(select(Noticia.url).where(Noticia.url.in_(all_candidate_urls))).scalars().all()
         )
 
     # Phase 3: collect per-source candidates (preserve source order for stats)

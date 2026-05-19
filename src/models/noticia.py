@@ -1,23 +1,26 @@
 from datetime import date, datetime
 from typing import Optional
 
-from sqlalchemy import Column, ForeignKey, Integer
-from sqlmodel import Field, SQLModel
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, mapped_column
+
+from models.base import Base
 
 
-class Noticia(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    scrape_run_id: Optional[int] = Field(
-        default=None,
-        sa_column=Column(Integer, ForeignKey("scraperun.id", ondelete="SET NULL"), index=True, nullable=True),
+class Noticia(Base):
+    __tablename__ = "noticia"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    scrape_run_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("scraperun.id", ondelete="SET NULL"), index=True
     )
-    title: str
-    url: str = Field(unique=True, index=True)
-    img: str
-    date_preview: str
-    source: str
-    country: str = Field(default="CL")
-    excerpt: Optional[str] = Field(default=None)
-    score: int = Field(default=0)
-    published_date: Optional[date] = Field(default=None, index=True)
-    created_at: datetime = Field(default_factory=datetime.now)
+    title: Mapped[str]
+    url: Mapped[str] = mapped_column(unique=True, index=True)
+    img: Mapped[str]
+    date_preview: Mapped[str]
+    source: Mapped[str]
+    country: Mapped[str] = mapped_column(String, default="CL")
+    excerpt: Mapped[Optional[str]]
+    score: Mapped[int] = mapped_column(default=0)
+    published_date: Mapped[Optional[date]] = mapped_column(index=True)
+    created_at: Mapped[datetime] = mapped_column(default=datetime.now)

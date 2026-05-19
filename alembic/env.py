@@ -4,7 +4,6 @@ from logging.config import fileConfig
 from pathlib import Path
 
 from sqlalchemy import engine_from_config, pool
-from sqlmodel import SQLModel
 
 from alembic import context
 
@@ -15,15 +14,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Importa todos los modelos para que SQLModel registre sus tablas en metadata
+# Importa todos los modelos para que SQLAlchemy registre sus tablas en metadata
 from models import Noticia, ScrapeRun, ScrapeRunSource, Usuario, UsuarioNoticiaVista  # noqa: F401
+from models.user import User  # noqa: F401
+from models.base import Base
 
 config = context.config
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = SQLModel.metadata
+target_metadata = Base.metadata
 
 
 def get_url() -> str:

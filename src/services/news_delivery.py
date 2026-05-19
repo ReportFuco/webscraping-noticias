@@ -4,7 +4,8 @@ import logging
 from datetime import datetime, timedelta
 from typing import Iterable
 
-from sqlmodel import Session, select
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 import config as ENV
 from models import Noticia, Usuario, UsuarioNoticiaVista
@@ -12,7 +13,7 @@ from utils import BotWhatsApp
 
 
 LOGGER = logging.getLogger(__name__)
-MAX_NEWS_AGE_DAYS = 4
+MAX_NEWS_AGE_DAYS = ENV.MAX_NEWS_AGE_DAYS
 
 
 def _build_message(usuario: Usuario, noticias: Iterable[Noticia]) -> str:
@@ -66,13 +67,14 @@ def registrar_huella_no_enviada(
 
 def obtener_noticias_no_enviadas(session: Session, usuario_id: int, limit: int = 10) -> list[Noticia]:
     sent_ids = set(
-        session.exec(
+        session.execute(
             select(UsuarioNoticiaVista.noticia_id).where(UsuarioNoticiaVista.usuario_id == usuario_id)
-        ).all()
+        ).scalars().all()
     )
 
-    statement = select(Noticia).order_by(Noticia.created_at.desc())
-    noticias = session.exec(statement).all()
+    noticias = session.execute(
+        select(Noticia).order_by(Noticia.created_at.desc())
+    ).scalars().all()
     pendientes = [noticia for noticia in noticias if noticia.id not in sent_ids]
 
     cutoff = datetime.now() - timedelta(days=MAX_NEWS_AGE_DAYS)
@@ -118,7 +120,7 @@ def registrar_envio(session: Session, usuario_id: int, noticias: Iterable[Notici
 
 def enviar_noticias_pendientes(session: Session, limit_por_usuario: int = 10) -> dict[str, object]:
     bot = BotWhatsApp(**ENV.EVOLUTION_CREDENCIALS)
-    usuarios = session.exec(select(Usuario).where(Usuario.activo == True)).all()
+    usuarios = session.execute(select(Usuario).where(Usuario.activo == True)).scalars().all()
 
     resultado: dict[str, object] = {"usuarios": [], "total_envios": 0}
 

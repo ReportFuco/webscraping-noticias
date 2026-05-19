@@ -3,7 +3,7 @@ import logging
 import os
 from pathlib import Path
 
-from sqlmodel import select
+from sqlalchemy import select
 
 from database import create_db, get_session
 from models import Noticia
@@ -27,7 +27,7 @@ def backfill_excerpts(limit: int = 100, source: str | None = None, retry_all: bo
         statement = statement.where(Noticia.source == source)
 
     statement = statement.order_by(Noticia.created_at.desc()).limit(limit)
-    noticias = session.exec(statement).all()
+    noticias = session.execute(statement).scalars().all()
 
     revisadas = 0
     actualizadas = 0

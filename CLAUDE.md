@@ -71,7 +71,7 @@ Pure keyword-matching scorer, no ML. Works on normalized (lowercased, accent-str
 - Bonuses for combinations; penalties for crime, politics, generic international news
 - `source`/`url` only add +1 and only when a retail signal already exists in the text
 
-To tune the scorer, edit the keyword lists at the top of `scorer.py` and validate with `test_scorer_cases.py`.
+To tune the scorer, edit the keyword lists in `src/utils/scorer_keywords.py` and validate with `test_scorer_cases.py`.
 
 ### Database (`src/database.py`)
 
@@ -97,3 +97,18 @@ See `.env.example`. Required: `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NA
 2. Export from `src/scrapers/__init__.py`
 3. Add the class to `SCRAPERS` list in `src/config.py`
 4. Validate with `inv test-scrapers --source <source-name>`
+
+## Production environment
+
+This repository runs in production. The API is served via `gunicorn` with uvicorn workers (`noticias-api.service`, 2 workers, puerto 8001) behind Nginx as a reverse proxy. **After any API code change, restart only the uvicorn service — Nginx does not need to be touched.**
+
+```bash
+# Restart the API after code changes
+sudo systemctl restart noticias-api
+
+# Check status / logs
+sudo systemctl status noticias-api
+journalctl -u noticias-api -f
+```
+
+The scraper pipeline runs on a cron schedule. Changes to `src/main.py` or scrapers take effect on the next cron trigger — no restart needed for those.

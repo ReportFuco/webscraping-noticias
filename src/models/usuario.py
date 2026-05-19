@@ -1,9 +1,12 @@
-from sqlmodel import SQLModel, Field
-from typing import Optional
+from sqlalchemy.orm import Mapped, mapped_column
+
+from models.base import Base
 
 
-class Usuario(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    nombre: str
-    whatsapp: str = Field(unique=True, index=True)
-    activo: bool = Field(default=True)
+class Usuario(Base):
+    __tablename__ = "usuario"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    nombre: Mapped[str]
+    whatsapp: Mapped[str] = mapped_column(unique=True, index=True)
+    activo: Mapped[bool] = mapped_column(default=True)
