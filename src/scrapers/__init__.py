@@ -18,6 +18,10 @@ from .diarioestrategia import DiarioEstrategiaScraper
 from .latercera_pulso import LaTerceraPulsoScraper
 from .cronista import CronistaScraper
 from .valoraanalitik import ValoraAnalitikScraper
+from .justretail import JustRetailScraper
+from .retailactual import RetailActualScraper
+from .americaretail import AmericaRetailScraper
+from .capital import CapitalScraper
 from .base import BaseScraper
 
 
@@ -28,5 +32,7 @@ __all__ = [
     "CCSScraper",
     "AndaScraper", "InfobaeAmericaScraper", "CencosudMediosScraper",
     "SMUScraper", "GestionScraper", "DiarioEstrategiaScraper",
-    "LaTerceraPulsoScraper", "CronistaScraper", "ValoraAnalitikScraper", "BaseScraper"
+    "LaTerceraPulsoScraper", "CronistaScraper", "ValoraAnalitikScraper",
+    "JustRetailScraper", "RetailActualScraper", "AmericaRetailScraper",
+    "CapitalScraper", "BaseScraper"
 ]

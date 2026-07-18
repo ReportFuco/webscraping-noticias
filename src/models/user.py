@@ -9,6 +9,9 @@ from models.base import Base
 class User(SQLAlchemyBaseUserTableUUID, Base):
     __tablename__ = "api_user"
 
+    # Legacy: reemplazada por la tabla api_key (múltiples keys hasheadas por usuario,
+    # ver models.api_key.ApiKey). Ya no se usa para autenticar; se mantiene solo para
+    # no romper el NOT NULL existente hasta una migración futura que la elimine.
     api_key = Column(
         String(64),
         unique=True,

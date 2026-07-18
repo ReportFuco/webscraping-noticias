@@ -13,6 +13,7 @@ from database import create_db, get_session
 from models import Noticia, ScrapeRun, ScrapeRunSource
 from schemas import NoticiaSchema
 from services.news_delivery import enviar_noticias_pendientes
+from services.webhook_dispatcher import dispatch_webhooks
 from utils import extraer_bajadas_batch, score_noticia, setup_logging
 
 
@@ -34,6 +35,7 @@ def _run_scraper(ScraperClass: type[BaseScraper]) -> tuple[str, list[NoticiaSche
 def procesar_noticias(trigger: str = "manual") -> dict[str, object]:
     session = next(get_session())
     total_nuevas = 0
+    noticias_nuevas: list[Noticia] = []
     errores: list[dict[str, str]] = []
 
     scrape_run = ScrapeRun(
@@ -160,6 +162,7 @@ def procesar_noticias(trigger: str = "manual") -> dict[str, object]:
                         score,
                         noticia.title[:80],
                     )
+                    noticias_nuevas.append(db_noticia)
                     total_nuevas += 1
                     nuevas_fuente += 1
                 except IntegrityError:
@@ -186,6 +189,9 @@ def procesar_noticias(trigger: str = "manual") -> dict[str, object]:
         )
 
     delivery = enviar_noticias_pendientes(session)
+
+    if noticias_nuevas:
+        dispatch_webhooks(session, scrape_run.id, noticias_nuevas)
 
     scrape_run.finished_at = datetime.now()
     scrape_run.total_reviewed = total_revisadas

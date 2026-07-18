@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.deps import verify_api_key
+from api.deps import verify_api_key, verify_superuser
 from api.schemas import NoticiaPatch, NoticiaResponse, NoticiasQuery, PaginatedNoticias
 from database import get_async_session
 from models import Noticia
@@ -36,7 +36,7 @@ async def list_noticias(session: SessionDep, q: QueryDep):
     total = (await session.execute(select(func.count()).select_from(Noticia).where(*filters))).scalar_one()
     items = (
         await session.execute(
-            select(Noticia).where(*filters).order_by(Noticia.date_preview.desc()).limit(q.limit).offset(q.offset)
+            select(Noticia).where(*filters).order_by(Noticia.id.desc()).limit(q.limit).offset(q.offset)
         )
     ).scalars().all()
 
@@ -51,7 +51,7 @@ async def get_noticia(noticia_id: int, session: SessionDep):
     return noticia
 
 
-@router.patch("/{noticia_id}", response_model=NoticiaResponse)
+@router.patch("/{noticia_id}", response_model=NoticiaResponse, dependencies=[Depends(verify_superuser)])
 async def patch_noticia(noticia_id: int, body: NoticiaPatch, session: SessionDep):
     noticia = await session.get(Noticia, noticia_id)
     if not noticia:

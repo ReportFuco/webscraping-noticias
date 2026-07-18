@@ -44,3 +44,51 @@ class PaginatedNoticias(BaseModel):
     limit: int
     offset: int
     items: Sequence[NoticiaResponse]
+
+
+class WebhookCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=100)
+    url: str = Field(min_length=10)
+    secret: str = Field(min_length=8)
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class WebhookUpdate(BaseModel):
+    name: str | None = Field(default=None, min_length=1, max_length=100)
+    url: str | None = Field(default=None, min_length=10)
+    secret: str | None = Field(default=None, min_length=8)
+    is_active: bool | None = None
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class WebhookResponse(BaseModel):
+    id: int
+    name: str
+    url: str
+    is_active: bool
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class ApiKeyCreate(BaseModel):
+    name: str = Field(min_length=1, max_length=100)
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class ApiKeyResponse(BaseModel):
+    id: int
+    name: str
+    key_prefix: str
+    is_active: bool
+    created_at: datetime
+    last_used_at: datetime | None
+
+    model_config = {"from_attributes": True}
+
+
+class ApiKeyCreateResponse(ApiKeyResponse):
+    api_key: str

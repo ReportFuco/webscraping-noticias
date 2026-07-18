@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Importa todos los modelos para que SQLAlchemy registre sus tablas en metadata
-from models import Noticia, ScrapeRun, ScrapeRunSource, Usuario, UsuarioNoticiaVista  # noqa: F401
+from models import ApiKey, Noticia, ScrapeRun, ScrapeRunSource, Usuario, UsuarioNoticiaVista, WebhookSubscriptor  # noqa: F401
 from models.user import User  # noqa: F401
 from models.base import Base
 

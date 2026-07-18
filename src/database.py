@@ -12,8 +12,8 @@ from config import DATABASE_HOST, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_POR
 DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 ASYNC_DATABASE_URL = f"postgresql+asyncpg://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
-engine = create_engine(DATABASE_URL, echo=False)
-async_engine = create_async_engine(ASYNC_DATABASE_URL, echo=False)
+engine = create_engine(DATABASE_URL, echo=False, pool_pre_ping=True, pool_recycle=1800)
+async_engine = create_async_engine(ASYNC_DATABASE_URL, echo=False, pool_pre_ping=True, pool_recycle=1800)
 _async_session_maker = async_sessionmaker(async_engine, expire_on_commit=False)
 
 _BASE_DIR = Path(__file__).resolve().parent.parent

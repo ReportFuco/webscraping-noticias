@@ -40,18 +40,20 @@ SCRAPERS: list[type[BaseScraper]] = [
     LaTerceraPulsoScraper,
     CronistaScraper,
     ValoraAnalitikScraper,
+    JustRetailScraper,
+    RetailActualScraper,
+    CapitalScraper,
 ]
 SCORE_MINIMO = 3
 MAX_NEWS_AGE_DAYS = 4
 MAX_SCRAPER_WORKERS = 10
 
 # API
-API_KEY = getenv("API_KEY", "")
 JWT_SECRET = getenv("JWT_SECRET", "")
 
 __all__ = [
     "DATABASE_USER", "DATABASE_PASSWORD", "DATABASE_NAME", "DATABASE_HOST", "DATABASE_PORT",
     "EVOLUTION_CREDENCIALS", "SCORE_MINIMO", "SCRAPERS",
     "MAX_NEWS_AGE_DAYS", "MAX_SCRAPER_WORKERS",
-    "API_KEY", "JWT_SECRET",
+    "JWT_SECRET",
 ]
