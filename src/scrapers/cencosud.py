@@ -8,6 +8,7 @@ import httpx
 
 from .base import BaseScraper
 from schemas import NoticiaSchema
+from utils.date_formater import normalizar_fecha
 
 
 class CencosudMediosScraper(BaseScraper):
@@ -72,7 +73,7 @@ class CencosudMediosScraper(BaseScraper):
             title = self._clean_text(title_match.group(2)) if title_match else None
             img = self._absolute_url(img_match.group(1)) if img_match else None
             excerpt = self._clean_text(excerpt_match.group(1)) if excerpt_match else None
-            date_preview = self._clean_text(date_match.group(1)) if date_match else None
+            date_preview = normalizar_fecha(self._clean_text(date_match.group(1))) if date_match else None
 
             if not url or url in seen_urls:
                 continue
