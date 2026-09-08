@@ -156,7 +156,7 @@ Ver `CRON.md`.
 Ejemplo:
 
 ```cron
-0 */3 * * * cd /ruta/a/webscraping-noticias && ./scripts/run_scraper.sh >> /ruta/a/webscraping-noticias/logs/cron.log 2>&1
+0 7-23/2 * * * cd /ruta/a/webscraping-noticias && ./scripts/run_scraper.sh >> /ruta/a/webscraping-noticias/logs/cron.log 2>&1
 ```
 
 ## Modelo de datos principal

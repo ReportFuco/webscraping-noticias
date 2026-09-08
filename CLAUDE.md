@@ -16,7 +16,7 @@ source .venv/bin/activate
 
 # Full pipeline (scrape → score → save → WhatsApp delivery)
 inv run-news                      # todas las fuentes
-inv run-news --grupo frecuentes   # solo las que corren cada 3 h
+inv run-news --grupo frecuentes   # solo las que corren cada 2 h
 inv run-news --grupo diarios      # solo las salas de prensa corporativas
 # or directly:
 PYTHONPATH=src SCRAPER_GRUPO=todos ./.venv/bin/python src/main.py
@@ -82,9 +82,9 @@ después de `</rss>`. Un scraper de RSS nuevo son cinco líneas — ver
 
 ### Grupos de fuentes y cadencia (`src/config.py`)
 
-- `SCRAPERS_FRECUENTES` (21): medios y portales que publican todo el día. Cron cada 3 h.
+- `SCRAPERS_FRECUENTES` (21): medios y portales que publican todo el día. Cron cada 2 h (7-23).
 - `SCRAPERS_DIARIOS` (4): salas de prensa corporativas (walmart, cencosud, smu,
-  capital). Publican 1-2 veces al mes; revisarlas cada 3 h era trabajo perdido
+  capital). Publican 1-2 veces al mes; revisarlas cada 2 h era trabajo perdido
   (smu: 3.760 revisadas → 3 noticias en 30 días). Cron una vez al día.
 - `SCRAPERS` es la unión y sigue siendo el catálogo completo para
   `inv list-sources` y `test_scrapers.py`.
