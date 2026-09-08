@@ -57,8 +57,11 @@ tail -f logs/cron.log
 6. Resolve the cover image: `noticia.img` if the scraper found one, else the `og:image`
    from step 4. **An article with neither is dropped** — `noticia.img` is NOT NULL
 7. Save passing articles as `Noticia` rows; catch `IntegrityError` for late duplicates
-8. Update `ScrapeRunSource` stats per source
-9. Call `enviar_noticias_pendientes` to deliver unseen news to active WhatsApp users
+8. Update `ScrapeRunSource` stats per source. Una fuente que devolvió cero noticias
+   **sin lanzar excepción** queda `status='vacia'`, no `'ok'`
+9. Si alguna fuente acumula `ALERTA_FUENTE_VACIA_CORRIDAS` corridas vacías seguidas,
+   avisa por WhatsApp (`services/salud_fuentes.py`)
+10. Call `enviar_noticias_pendientes` to deliver unseen news to active WhatsApp users
 
 ### Scraper contract (`src/scrapers/base.py`)
 
@@ -115,6 +118,27 @@ SQLAlchemy 2.0 (`DeclarativeBase`) with PostgreSQL, engines sync (`psycopg2`) y 
 
 Key tables: `noticia` (unique on `url`), `usuario`, `usuarionoticiavista` (FK to noticia uses `ON DELETE CASCADE`), `scraperun`, `scraperunsource`.
 
+### Salud de las fuentes (`src/services/salud_fuentes.py`)
+
+El modo de falla más probable de un scraper no es la excepción: es que el sitio
+cambie el HTML y `fetch()` devuelva una lista vacía sin quejarse. Eso quedaba
+como `status='ok'` con `reviewed_count=0` y solo se veía mirando la tabla a mano.
+
+Ahora esa fila se marca `vacia` (la columna es texto libre: **no hubo migración**)
+y la corrida completa queda `partial`, con la lista en `scraperun.notes`.
+
+El aviso por WhatsApp sale **una sola vez, en la corrida que cruza el umbral**.
+Una fuente rota sigue vacía en todas las corridas siguientes y con el cron cada
+2 h serían doce mensajes al día por lo mismo. Por eso `fuentes_a_avisar` compara
+con `==` y no con `>=`, y consulta `umbral + 1` filas: pidiendo justo el umbral,
+una fuente rota hace días devuelve siempre una racha de exactamente `umbral` y el
+aviso vuelve a salir en cada ciclo. Hay un test para ese caso.
+
+Los destinos salen de `ALERTA_WHATSAPP`, **no** de la tabla `usuario`: esa es la
+lista de gente que recibe noticias, no el canal de avisos técnicos. Sin la
+variable, el aviso queda solo en el log. El envío nunca propaga errores: una
+alerta que falla no puede voltear la corrida que la generó.
+
 ### Delivery (`src/services/news_delivery.py`)
 
 Sends up to `MAX_NOTICIAS_POR_ENVIO` (20) unseen articles per active user. Articles older
@@ -144,7 +168,7 @@ auditoría y backfill, a los que la imagen no les sirve.
 
 ## Environment variables
 
-See `.env.example`. Required: `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME`. Optional: `DATABASE_HOST` (default `127.0.0.1`), `DATABASE_PORT` (default `5432`), Evolution API vars (`URL_EVOLUTION`, `INSTANCE_EVOLUTION`, `APIKEY_EVOLUTION`).
+See `.env.example`. Required: `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME`. Optional: `DATABASE_HOST` (default `127.0.0.1`), `DATABASE_PORT` (default `5432`), Evolution API vars (`URL_EVOLUTION`, `INSTANCE_EVOLUTION`, `APIKEY_EVOLUTION`), `ALERTA_WHATSAPP` (números que reciben la alerta de fuentes muertas, separados por coma; vacío = solo log) y `ALERTA_FUENTE_VACIA_CORRIDAS` (default 3).
 
 ## Adding a new scraper
 

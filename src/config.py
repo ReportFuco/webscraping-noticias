@@ -74,6 +74,19 @@ GRUPOS_SCRAPERS: dict[str, list[type[BaseScraper]]] = {
 SCORE_MINIMO = 3
 MAX_NEWS_AGE_DAYS = 4
 
+# Corridas seguidas sin resultados que hacen saltar la alerta de fuente
+# muerta. Con el cron cada 2 h son ~6 horas de silencio; menos de 3 dispara
+# por un mal rato del sitio, y las salas de prensa del grupo `diarios`
+# tardarian 3 dias en avisar. Ver services/salud_fuentes.py.
+ALERTA_FUENTE_VACIA_CORRIDAS = int(getenv("ALERTA_FUENTE_VACIA_CORRIDAS", "3"))
+
+# Numeros que reciben esa alerta, separados por coma. Vacio = solo queda en
+# el log. No son los usuarios de `usuario`: eso es la lista de noticias, no
+# el canal para avisos tecnicos.
+ALERTA_WHATSAPP = [
+    numero.strip() for numero in getenv("ALERTA_WHATSAPP", "").split(",") if numero.strip()
+]
+
 # Noticias por usuario y por corrida. Cada una pesa ~450 caracteres, o sea que
 # 20 son ~8.200: el doble del limite de un mensaje de WhatsApp. Por eso el
 # envio se parte en varios mensajes (`MAX_CARACTERES_MENSAJE`); subir este
@@ -96,6 +109,7 @@ JWT_SECRET = getenv("JWT_SECRET", "")
 __all__ = [
     "DATABASE_USER", "DATABASE_PASSWORD", "DATABASE_NAME", "DATABASE_HOST", "DATABASE_PORT",
     "EVOLUTION_CREDENCIALS", "SCORE_MINIMO", "SCRAPERS",
+    "ALERTA_FUENTE_VACIA_CORRIDAS", "ALERTA_WHATSAPP",
     "SCRAPERS_FRECUENTES", "SCRAPERS_DIARIOS", "GRUPOS_SCRAPERS",
     "SCRAPER_MAX_INTENTOS", "SCRAPER_BACKOFF_SEGUNDOS",
     "MAX_NEWS_AGE_DAYS", "MAX_SCRAPER_WORKERS",

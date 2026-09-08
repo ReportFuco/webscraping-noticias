@@ -14,6 +14,11 @@ from database import create_db, get_session
 from models import Noticia, ScrapeRun, ScrapeRunSource
 from schemas import NoticiaSchema
 from services.news_delivery import enviar_noticias_pendientes
+from services.salud_fuentes import (
+    ESTADO_VACIA,
+    avisar_fuentes_vacias,
+    fuentes_a_avisar,
+)
 from services.webhook_dispatcher import dispatch_webhooks
 from utils import extraer_metadatos_batch, score_noticia, setup_logging
 
@@ -98,6 +103,7 @@ def procesar_noticias(
     total_nuevas = 0
     noticias_nuevas: list[Noticia] = []
     errores: list[dict[str, str]] = []
+    vacias: list[str] = []
 
     scrape_run = ScrapeRun(
         trigger=trigger,
@@ -182,7 +188,16 @@ def procesar_noticias(
         source = ScraperClass.source
         noticias, error = raw_results.get(source, ([], None))
 
-        source_status = "error" if error else "ok"
+        if error:
+            source_status = "error"
+        elif not noticias:
+            # Cero noticias y ninguna excepcion: el sitio cambio y el scraper
+            # no se dio cuenta. Ver services/salud_fuentes.py.
+            source_status = ESTADO_VACIA
+            vacias.append(source)
+        else:
+            source_status = "ok"
+
         error_message = str(error) if error else None
         error_count = 1 if error else 0
         nuevas_fuente = 0
@@ -264,6 +279,14 @@ def procesar_noticias(
             nuevas_fuente,
         )
 
+    if vacias:
+        avisar_fuentes_vacias(
+            fuentes_a_avisar(session, vacias, ENV.ALERTA_FUENTE_VACIA_CORRIDAS),
+            ENV.ALERTA_FUENTE_VACIA_CORRIDAS,
+            ENV.ALERTA_WHATSAPP,
+            ENV.EVOLUTION_CREDENCIALS,
+        )
+
     delivery = enviar_noticias_pendientes(session)
 
     if noticias_nuevas:
@@ -273,7 +296,11 @@ def procesar_noticias(
     scrape_run.total_reviewed = total_revisadas
     scrape_run.total_new = total_nuevas
     scrape_run.total_errors = len(errores)
-    scrape_run.status = "partial" if errores else "ok"
+    # Una fuente vacia no lanzo excepcion, asi que no suma a total_errors,
+    # pero la corrida tampoco salio entera: queda parcial y con la lista en
+    # notes, que hasta ahora no se usaba para nada.
+    scrape_run.status = "partial" if errores or vacias else "ok"
+    scrape_run.notes = f"vacias: {', '.join(sorted(vacias))}" if vacias else None
     session.add(scrape_run)
     session.commit()
 
@@ -282,14 +309,17 @@ def procesar_noticias(
         "total_revisadas": total_revisadas,
         "total_nuevas": total_nuevas,
         "errores": errores,
+        "vacias": sorted(vacias),
         "delivery": delivery,
     }
     LOGGER.info(
-        "Proceso finalizado scrape_run_id=%s revisadas=%s nuevas=%s errores=%s delivery=%s",
+        "Proceso finalizado scrape_run_id=%s revisadas=%s nuevas=%s errores=%s "
+        "vacias=%s delivery=%s",
         scrape_run.id,
         total_revisadas,
         total_nuevas,
         len(errores),
+        len(vacias),
         _resumen_delivery(delivery),
     )
     return resumen

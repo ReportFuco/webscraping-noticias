@@ -242,6 +242,32 @@ Y penaliza con más fuerza:
 - `latercera_pulso` dejó Playwright y pasó al feed RSS de Arc: 20 noticias por corrida en vez de las 9 que alcanzaba a renderizar la portada
 - cuatro fuentes nuevas: La República (empresas), Chócale, SOFOFA y Revista Logistec
 
+## Salud de las fuentes
+
+Un scraper cuyo sitio cambió el HTML no falla: devuelve cero noticias y la
+corrida lo da por bueno. Ese caso se registra como `status='vacia'` en
+`scraperunsource` (antes quedaba como `ok` con `reviewed_count=0`, o sea
+invisible) y la corrida entera queda `partial`, con la lista en
+`scraperun.notes`.
+
+Cuando una fuente acumula `ALERTA_FUENTE_VACIA_CORRIDAS` corridas vacías
+seguidas (3 por defecto, ~6 horas con el cron actual) sale un aviso por
+WhatsApp a los números de `ALERTA_WHATSAPP`. **Avisa una sola vez**, en la
+corrida que cruza el umbral: si no, una fuente rota mandaría doce mensajes al
+día. Se vuelve a armar solo si la fuente se recupera y vuelve a caer.
+
+Sin `ALERTA_WHATSAPP` configurado el aviso queda solo en el log, como
+`ERROR  [news_scraper] Fuentes sin resultados en 3 corridas seguidas: ...`.
+
+Para revisar el estado a mano:
+
+```sql
+SELECT source, status, reviewed_count, error_message
+FROM scraperunsource
+WHERE scrape_run_id = (SELECT max(id) FROM scraperun)
+ORDER BY status DESC;
+```
+
 ## Logs
 
 ```bash
