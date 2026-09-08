@@ -1,116 +1,26 @@
-from __future__ import annotations
-
-import json
-import re
-from typing import List
-
-from playwright.sync_api import sync_playwright
-
-from .base import BaseScraper
-from schemas import NoticiaSchema
-from utils import normalizar_fecha
+from .rss import RSSScraper
 
 
-class LaTerceraPulsoScraper(BaseScraper):
+class LaTerceraPulsoScraper(RSSScraper):
+    """
+    Pulso, la sección de negocios de La Tercera.
+
+    Antes esto abría Chromium con Playwright, bajaba la portada del canal y
+    reconstruía a mano los objetos JSON que Arc deja incrustados en el HTML.
+    Funcionaba, pero la portada solo lista lo que alcanza a renderizar: en la
+    corrida del 7 de septiembre de 2026 dejó 9 noticias. Arc publica el mismo
+    canal como RSS y ahí vienen 39, de las cuales 7 pasan el mínimo del scorer.
+    Más cobertura, sin navegador y sin parseo frágil.
+
+    El feed no trae imagen —ni `media:content` ni `<img>` en el
+    `content:encoded`—, así que la portada la resuelve el pipeline con la
+    `og:image` de la nota, que La Tercera sí publica. La visita a la nota
+    ocurre igual para sacar el excerpt, o sea que no es un request extra.
+
+    `?outputType=xml` es obligatorio: sin ese parámetro Arc devuelve JSON.
+    """
+
     source = "latercera_pulso"
-    URL = "https://www.latercera.com/canal/pulso/"
+    country = "CL"
     BASE_URL = "https://www.latercera.com"
-    MAX_ITEMS = 20
-    USER_AGENT = (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/122.0.0.0 Safari/537.36"
-    )
-
-    def _extract_json_objects(self, raw_html: str) -> list[dict]:
-        objects: list[dict] = []
-        pattern = r'\{"_id":"[^"]+","canonical_url":"/pulso/noticia/[^"]+"'
-
-        for match in re.finditer(pattern, raw_html):
-            start = match.start()
-            brace_count = 0
-            in_string = False
-            escaped = False
-            end = None
-
-            for i in range(start, len(raw_html)):
-                ch = raw_html[i]
-                if in_string:
-                    if escaped:
-                        escaped = False
-                    elif ch == "\\":
-                        escaped = True
-                    elif ch == '"':
-                        in_string = False
-                else:
-                    if ch == '"':
-                        in_string = True
-                    elif ch == '{':
-                        brace_count += 1
-                    elif ch == '}':
-                        brace_count -= 1
-                        if brace_count == 0:
-                            end = i + 1
-                            break
-
-            if end is None:
-                continue
-
-            chunk = raw_html[start:end]
-            try:
-                obj = json.loads(chunk)
-            except Exception:
-                continue
-
-            if obj.get("taxonomy", {}).get("primary_section", {}).get("path") != "/pulso":
-                continue
-            objects.append(obj)
-
-        return objects
-
-    def fetch(self) -> List[NoticiaSchema]:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            context = browser.new_context(user_agent=self.USER_AGENT, locale="es-CL")
-            page = context.new_page()
-            page.goto(self.URL, wait_until="domcontentloaded", timeout=60000)
-            raw_html = page.content()
-            browser.close()
-
-        raw_objects = self._extract_json_objects(raw_html)
-        self.logger.info("Noticias encontradas: %s", len(raw_objects))
-
-        noticias: list[NoticiaSchema] = []
-        seen_urls: set[str] = set()
-
-        for item in raw_objects:
-            url = self._absolute_url(
-                item.get("websites", {}).get("la-tercera", {}).get("website_url")
-                or item.get("canonical_url")
-            )
-            title = self._clean_text(item.get("headlines", {}).get("basic"))
-            excerpt = self._clean_text(item.get("description", {}).get("basic"))
-            img = self._absolute_url(item.get("promo_items", {}).get("basic", {}).get("url"))
-            date_preview = normalizar_fecha(item.get("first_publish_date") or item.get("last_updated_date") or "")
-
-            if not title or not url or not img or not date_preview:
-                continue
-            if url in seen_urls:
-                continue
-
-            noticias.append(
-                NoticiaSchema(
-                    title=title,
-                    url=url,
-                    img=img,
-                    date_preview=date_preview,
-                    source=self.source,
-                    excerpt=excerpt,
-                )
-            )
-            seen_urls.add(url)
-
-            if len(noticias) >= self.MAX_ITEMS:
-                break
-
-        return noticias
+    URL = "https://www.latercera.com/arc/outboundfeeds/rss/category/pulso/?outputType=xml"

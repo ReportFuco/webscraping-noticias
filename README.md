@@ -42,11 +42,11 @@ La cobertura está pensada para capturar señales de:
 
 | País | Fuentes |
 |---|---|
-| Chile | 16 |
+| Chile | 19 |
 | España | 3 (JustRetail, Retail Actual, EjePrime) |
 | Argentina | 2 (El Cronista, Infobae América) |
 | Perú | 2 (Gestión, Perú Retail) |
-| Colombia | 1 (Valora Analitik) |
+| Colombia | 2 (Valora Analitik, La República) |
 | México | 1 (Expansión) |
 | Brasil, Ecuador, Uruguay, Bolivia, Paraguay | ninguna |
 
@@ -60,6 +60,35 @@ Por la misma razón quedaron fuera Merca2.0 (2 de 40), Modaes (las notas devuelv
 403 y son de pago) y The Logistics World, El Economista y Portafolio (sin RSS o
 detrás de Cloudflare).
 
+### Fuentes evaluadas el 8 de septiembre de 2026
+
+Se sumaron cuatro, midiendo cada feed candidato con el scorer del propio
+proyecto —cuántos ítems pasan `SCORE_MINIMO`— igual que en la evaluación de
+Brasil:
+
+| Fuente | País | Rinde | Grupo |
+|---|---|---|---|
+| La República (sección empresas) | Colombia | 8 de 60 | frecuentes |
+| Chócale | Chile | 2 de 10 | frecuentes |
+| SOFOFA | Chile | 4 de 10 | diarios |
+| Revista Logistec | Chile | 2 de 10 | diarios |
+
+De La República hay que usar `/rss/empresas` y no `/rss`: el feed general deja
+2 de 60 y el de empresas 8 de 60, al mismo costo de red.
+
+Quedaron fuera, con el número medido al lado: **iProfesional** (Argentina, 2 de
+49 y ambos falsos positivos), **PortalPortuario** (1 de 15, y era un crucero en
+Kiel), **El Universo** (Ecuador, 2 de 100 en el feed general; su feed de
+economía existe pero viene vacío), **Mercado Negro** (Perú, 403 de Cloudflare
+en la home y en el feed) y **Mall & Retail** (Colombia, el más pertinente del
+país pero sin RSS parseable: necesita scraper de HTML propio).
+
+Sin RSS usable, o sea que hoy exigirían Playwright: Emol, Cooperativa, T13, CNN
+Chile, El Dínamo, Ámbito, La Nación, El Observador (Uruguay), Primicias
+(Ecuador), 5días (Paraguay), El Deber (Bolivia), Semana, Infomercado e
+InfoNegocios. **ASACH**, el gremio de supermercados de Chile, quedó fuera por
+otra razón: su dominio ya no resuelve.
+
 ### Nota
 - algunas fuentes pueden requerir ajustes puntuales con el tiempo por cambios de HTML, rate limiting o bloqueos anti-bot.
 - `DFLab` fue retirado de la ejecución activa, pero su clase no fue eliminada del código.
@@ -67,6 +96,8 @@ detrás de Cloudflare).
   publica desde el 1 de agosto de 2026 y su contenido era moda y lujo, no consumo.
 - la portada de Perú Retail responde 403 (Cloudflare) pero su feed y sus notas
   responden 200; que `curl` a la home falle no significa que la fuente esté caída.
+- `Chócale` lleva headers propios: su WAF responde 403 al User-Agent Chrome/122 que declara `BaseScraper` y 200 a uno actual. El UA compartido ya tiene más de dos años; subirlo es una limpieza pendiente aparte.
+- `SOFOFA` pierde cerca de la mitad de sus notas al guardar: varias páginas del sitio no declaran `og:image` y `noticia.img` es NOT NULL.
 
 ## Estructura
 
@@ -208,6 +239,8 @@ Y penaliza con más fuerza:
 - corrección de URLs públicas de SMU
 - limpieza de noticias SMU antiguas para no empujar noticias viejas por cron
 - borrado en cascada para referencias de vistas/envíos
+- `latercera_pulso` dejó Playwright y pasó al feed RSS de Arc: 20 noticias por corrida en vez de las 9 que alcanzaba a renderizar la portada
+- cuatro fuentes nuevas: La República (empresas), Chócale, SOFOFA y Revista Logistec
 
 ## Logs
 

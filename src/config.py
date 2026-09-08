@@ -43,17 +43,22 @@ SCRAPERS_FRECUENTES: list[type[BaseScraper]] = [
     PeruRetailScraper,
     ExpansionScraper,
     EjePrimeScraper,
+    LaRepublicaScraper,
+    ChocaleScraper,
 ]
 
-# Salas de prensa corporativas y similares: publican una o dos veces al mes, así
-# que revisarlas cada 3 horas es trabajo perdido. Medido sobre 30 días:
-# smu 3.760 revisadas → 3 noticias, capital 2.214 → 2, walmartchile 1.256 → 3,
-# cencosud 396 → 3. Corren una vez al día (SCRAPER_GRUPO=diarios).
+# Fuentes de baja frecuencia: salas de prensa corporativas y gremios. Publican
+# una o dos veces al mes, así que revisarlas cada dos horas es trabajo perdido.
+# Medido sobre 30 días: smu 3.760 revisadas → 3 noticias, capital 2.214 → 2,
+# walmartchile 1.256 → 3, cencosud 396 → 3. Corren una vez al día
+# (SCRAPER_GRUPO=diarios).
 SCRAPERS_DIARIOS: list[type[BaseScraper]] = [
     WalmartChileScraper,
     CencosudMediosScraper,
     SMUScraper,
     CapitalScraper,
+    SofofaScraper,
+    RevistaLogistecScraper,
 ]
 
 # Unión de ambos grupos. Es lo que usan `inv list-sources`, `test_scrapers.py` y

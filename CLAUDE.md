@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-News scraper focused on retail, supermarkets, mass consumption, commercial logistics, and corporate signals in Chile. It aggregates news from 25 sources, scores each article for relevance, stores in PostgreSQL, and delivers summaries via WhatsApp through Evolution API.
+News scraper focused on retail, supermarkets, mass consumption, commercial logistics, and corporate signals in Chile. It aggregates news from 29 sources, scores each article for relevance, stores in PostgreSQL, and delivers summaries via WhatsApp through Evolution API.
 
 ## Commands
 
@@ -82,9 +82,9 @@ después de `</rss>`. Un scraper de RSS nuevo son cinco líneas — ver
 
 ### Grupos de fuentes y cadencia (`src/config.py`)
 
-- `SCRAPERS_FRECUENTES` (21): medios y portales que publican todo el día. Cron cada 2 h (7-23).
-- `SCRAPERS_DIARIOS` (4): salas de prensa corporativas (walmart, cencosud, smu,
-  capital). Publican 1-2 veces al mes; revisarlas cada 2 h era trabajo perdido
+- `SCRAPERS_FRECUENTES` (23): medios y portales que publican todo el día. Cron cada 2 h (7-23).
+- `SCRAPERS_DIARIOS` (6): salas de prensa corporativas y gremios (walmart, cencosud, smu,
+  capital, sofofa, revistalogistec). Publican 1-2 veces al mes; revisarlas cada 2 h era trabajo perdido
   (smu: 3.760 revisadas → 3 noticias en 30 días). Cron una vez al día.
 - `SCRAPERS` es la unión y sigue siendo el catálogo completo para
   `inv list-sources` y `test_scrapers.py`.

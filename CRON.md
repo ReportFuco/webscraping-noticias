@@ -6,8 +6,8 @@ Hay **dos** entradas, porque no todas las fuentes rinden a la misma cadencia.
 
 | Grupo | Fuentes | Cadencia | Por qué |
 |---|---|---|---|
-| `frecuentes` | 21 medios y portales | cada 2 h | publican durante todo el día |
-| `diarios` | walmartchile, cencosud, smu, capital | 1 vez al día | salas de prensa corporativas: publican 1-2 veces al mes |
+| `frecuentes` | 23 medios y portales | cada 2 h | publican durante todo el día |
+| `diarios` | walmartchile, cencosud, smu, capital, sofofa, revistalogistec | 1 vez al día | salas de prensa y gremios: publican 1-2 veces al mes |
 
 El grupo se elige con la variable `SCRAPER_GRUPO`. Sin ella, corren todas
 (`todos`).
