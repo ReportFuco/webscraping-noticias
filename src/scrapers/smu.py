@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import html
 import json
 import re
 from typing import List
@@ -17,25 +16,6 @@ class SMUScraper(BaseScraper):
     URL = "https://www.smu.cl/noticias"
     BASE_URL = "https://www.smu.cl"
     MAX_ITEMS = 20
-
-    def _clean_text(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        text = html.unescape(value)
-        text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text or None
-
-    def _absolute_url(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        if value.startswith(("http://", "https://")):
-            return value
-        if value.startswith("//"):
-            return f"https:{value}"
-        if value.startswith("/"):
-            return f"{self.BASE_URL}{value}"
-        return f"{self.BASE_URL}/{value.lstrip('/')}"
 
     def fetch(self) -> List[NoticiaSchema]:
         with sync_playwright() as p:

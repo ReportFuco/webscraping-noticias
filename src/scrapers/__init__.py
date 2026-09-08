@@ -22,7 +22,11 @@ from .justretail import JustRetailScraper
 from .retailactual import RetailActualScraper
 from .americaretail import AmericaRetailScraper
 from .capital import CapitalScraper
+from .peruretail import PeruRetailScraper
+from .expansion import ExpansionScraper
+from .ejeprime import EjePrimeScraper
 from .base import BaseScraper
+from .rss import RSSScraper
 
 
 __all__ = [
@@ -34,5 +38,6 @@ __all__ = [
     "SMUScraper", "GestionScraper", "DiarioEstrategiaScraper",
     "LaTerceraPulsoScraper", "CronistaScraper", "ValoraAnalitikScraper",
     "JustRetailScraper", "RetailActualScraper", "AmericaRetailScraper",
-    "CapitalScraper", "BaseScraper"
+    "CapitalScraper", "PeruRetailScraper", "ExpansionScraper",
+    "EjePrimeScraper", "BaseScraper", "RSSScraper"
 ]

@@ -1,12 +1,29 @@
-playwright
-psycopg2-binary
-pydantic
-python-dotenv
-requests
-httpx
-sqlalchemy
-sqlmodel
-invoke
-fastapi
-uvicorn[standard]
-alembic
+# Versiones fijadas a lo que corre en produccion (2026-07-28).
+# Para actualizar: cambiar el pin, reinstalar y correr `inv test` + `inv test-scrapers`.
+
+# --- pipeline de scraping ---
+playwright==1.58.0
+httpx==0.28.1
+pydantic==2.12.5
+python-dotenv==1.2.2
+
+# --- base de datos ---
+SQLAlchemy==2.0.48
+psycopg2-binary==2.9.11
+asyncpg==0.31.0
+alembic==1.18.4
+# Los modelos ya no usan SQLModel (heredan de DeclarativeBase), pero la
+# migracion inicial `aaf1d98822c0_initial_schema.py` importa
+# `sqlmodel.sql.sqltypes`: sin este paquete, `alembic upgrade head` desde cero
+# falla. No quitar sin reescribir esa migracion.
+sqlmodel==0.0.37
+
+# --- API ---
+fastapi==0.136.1
+uvicorn[standard]==0.47.0
+gunicorn==26.0.0
+fastapi-users[sqlalchemy]==15.0.5
+
+# --- tooling ---
+invoke==3.0.3
+pytest==9.1.1

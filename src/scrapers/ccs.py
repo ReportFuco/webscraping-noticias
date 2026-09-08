@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import html
 import json
 import re
 from typing import Any, List
@@ -15,34 +14,8 @@ from utils import normalizar_fecha
 class CCSScraper(BaseScraper):
     source = "ccs"
     URL = "https://www.ccs.cl/noticias-ccs/"
+    BASE_URL = "https://www.ccs.cl"
     MAX_ARTICLES = 10
-    HEADERS = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/122.0.0.0 Safari/537.36"
-        ),
-        "Accept-Language": "es-CL,es;q=0.9,en;q=0.8",
-    }
-
-    def _clean_text(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        text = html.unescape(value)
-        text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text or None
-
-    def _absolute_url(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        if value.startswith(("http://", "https://")):
-            return value
-        if value.startswith("//"):
-            return f"https:{value}"
-        if value.startswith("/"):
-            return f"https://www.ccs.cl{value}"
-        return f"https://www.ccs.cl/{value.lstrip('/')}"
 
     def _extract_listing_urls(self, raw_html: str) -> list[str]:
         urls: list[str] = []

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import html
 import re
 from datetime import date, datetime
 from typing import List
@@ -15,14 +14,6 @@ class JustRetailScraper(BaseScraper):
     source = "justretail"
     country = "ES"
     URL = "https://www.justretail.news/"
-    HEADERS = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/122.0.0.0 Safari/537.36"
-        ),
-        "Accept-Language": "es-CL,es;q=0.9,en;q=0.8",
-    }
     BLOCK_RE = re.compile(
         r'<div class="td_module_flex td_module_flex_1[^"]*"[^>]*>.*?</h3>.*?</div>\s*</div>\s*</div>',
         re.DOTALL,
@@ -37,14 +28,6 @@ class JustRetailScraper(BaseScraper):
         r'<time class="entry-date updated td-module-date" datetime="([^"]+)"'
     )
     EXCERPT_RE = re.compile(r'<div class="td-excerpt">(.*?)</div>', re.DOTALL)
-
-    def _clean_text(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        text = html.unescape(value)
-        text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text or None
 
     def _parse_date(self, value: str | None) -> date | None:
         if not value:

@@ -36,9 +36,15 @@ def list_sources(c):
 
 
 @task
-def run_news(c):
+def test(c):
+    """Corre la suite de pytest (scorer + helpers de BaseScraper). No toca la DB."""
+    c.run(f"{PYTHON} -m pytest tests/ -q", pty=True)
+
+
+@task(help={"grupo": "frecuentes | diarios | todos (default: todos)"})
+def run_news(c, grupo="todos"):
     """Ejecuta el flujo normal: scrapeo, filtro, guardado y envío a contactos registrados."""
-    c.run(f"{PYTHON} src/main.py", pty=True)
+    c.run(f"SCRAPER_GRUPO={grupo} {PYTHON} src/main.py", pty=True)
 
 
 @task

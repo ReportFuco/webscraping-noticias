@@ -24,8 +24,9 @@ def _validate_item(item) -> list[str]:
         errors.append("title vacío")
     if not getattr(item, "url", None):
         errors.append("url vacía")
-    if not getattr(item, "img", None):
-        errors.append("img vacía")
+    # `img` puede venir vacía: los feeds RSS que no la traen la resuelven en el
+    # pipeline con la og:image de la nota. Lo que sí se valida, más abajo, es
+    # que cuando venga sea una URL absoluta.
     if not getattr(item, "date_preview", None):
         errors.append("date_preview vacío")
     if not getattr(item, "source", None):

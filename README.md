@@ -16,9 +16,10 @@ Hoy el proyecto ya incluye:
 - **PostgreSQL** como base principal
 - **scraping multi-fuente**
 - **deduplicación por URL antes de insertar**
-- **excerpts concurrentes con `httpx.AsyncClient`** (concurrencia segura = 4)
+- **excerpts concurrentes con `httpx.AsyncClient`** (concurrencia = 8)
 - **scoring endurecido** para bajar ruido policial/internacional genérico
-- **envío por WhatsApp** con límite actual de **10 noticias por usuario**
+- **envío por WhatsApp** con límite actual de **20 noticias por usuario**, partido
+  en varios mensajes para no pasarse del tope de 4.096 caracteres de WhatsApp
 - relación de vistas/envíos con **`ON DELETE CASCADE`** para limpiar referencias al borrar noticias
 
 ## Cobertura de fuentes
@@ -37,9 +38,35 @@ La cobertura está pensada para capturar señales de:
 - logística comercial
 - inversión y expansión
 
+### Cobertura por país
+
+| País | Fuentes |
+|---|---|
+| Chile | 16 |
+| España | 3 (JustRetail, Retail Actual, EjePrime) |
+| Argentina | 2 (El Cronista, Infobae América) |
+| Perú | 2 (Gestión, Perú Retail) |
+| Colombia | 1 (Valora Analitik) |
+| México | 1 (Expansión) |
+| Brasil, Ecuador, Uruguay, Bolivia, Paraguay | ninguna |
+
+Brasil sigue sin fuente después de evaluarlo: los medios retail del país no son
+utilizables hoy —el feed de Mercado&Consumo está congelado desde agosto de 2026 y
+SBVC no resuelve por DNS— y los generalistas no rinden. Medido el 7 de septiembre
+de 2026 sobre una corrida real, Estadão Economia dejó 0 noticias de 40 y Bloomberg
+Línea 3 de 60, ninguna de retail. Sumarlos habría sido costo de red sin señal.
+
+Por la misma razón quedaron fuera Merca2.0 (2 de 40), Modaes (las notas devuelven
+403 y son de pago) y The Logistics World, El Economista y Portafolio (sin RSS o
+detrás de Cloudflare).
+
 ### Nota
 - algunas fuentes pueden requerir ajustes puntuales con el tiempo por cambios de HTML, rate limiting o bloqueos anti-bot.
 - `DFLab` fue retirado de la ejecución activa, pero su clase no fue eliminada del código.
+- `AmericaRetail` también está fuera del flujo: su clase funciona, pero el sitio no
+  publica desde el 1 de agosto de 2026 y su contenido era moda y lujo, no consumo.
+- la portada de Perú Retail responde 403 (Cloudflare) pero su feed y sus notas
+  responden 200; que `curl` a la home falle no significa que la fuente esté caída.
 
 ## Estructura
 

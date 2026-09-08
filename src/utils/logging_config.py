@@ -1,5 +1,10 @@
 import logging
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
+
+
+MAX_BYTES = 10 * 1024 * 1024
+BACKUP_COUNT = 5
 
 
 def setup_logging(log_level: str = "INFO", log_file: str | None = None) -> logging.Logger:
@@ -24,7 +29,13 @@ def setup_logging(log_level: str = "INFO", log_file: str | None = None) -> loggi
         )
         if not already:
             log_path.parent.mkdir(parents=True, exist_ok=True)
-            fh = logging.FileHandler(log_path, encoding="utf-8")
+            # Rotativo: sin esto el archivo crece indefinidamente (llegó a 44 MB).
+            fh = RotatingFileHandler(
+                log_path,
+                maxBytes=MAX_BYTES,
+                backupCount=BACKUP_COUNT,
+                encoding="utf-8",
+            )
             fh.setFormatter(formatter)
             root_logger.addHandler(fh)
 

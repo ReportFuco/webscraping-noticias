@@ -13,14 +13,7 @@ from schemas import NoticiaSchema
 class CapitalScraper(BaseScraper):
     source = "capital"
     URL = "https://www.df.cl/capital"
-    HEADERS = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/122.0.0.0 Safari/537.36"
-        ),
-        "Accept-Language": "es-CL,es;q=0.9,en;q=0.8",
-    }
+    BASE_URL = "https://www.df.cl"
     ARTICLE_RE = re.compile(r'<article class="card.*?</article>', re.IGNORECASE | re.DOTALL)
     LINK_RE = re.compile(r'<a href="([^"]+)"', re.IGNORECASE)
     IMG_RE = re.compile(r'<img src="([^"]+)"', re.IGNORECASE)
@@ -28,22 +21,6 @@ class CapitalScraper(BaseScraper):
     DESC_RE = re.compile(r'<p class="card__description">(.*?)</p>', re.IGNORECASE | re.DOTALL)
     IMG_DATE_RE = re.compile(r"/site/artic/(\d{4})(\d{2})(\d{2})/")
     SPAN_DATE_RE = re.compile(r'<span class="card__date">(\d{2})/(\d{2})/(\d{4})</span>')
-
-    def _absolute_url(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        if value.startswith("http://") or value.startswith("https://"):
-            return value
-        if value.startswith("/"):
-            return f"https://www.df.cl{value}"
-        return f"https://www.df.cl/{value.lstrip('/')}"
-
-    def _clean_text(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        text = re.sub(r"<[^>]+>", " ", value)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text or None
 
     def _extract_date(self, img_url: str | None, block: str) -> date | None:
         if img_url:

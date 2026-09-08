@@ -11,23 +11,7 @@ from schemas import NoticiaSchema
 class DFLabScraper(BaseScraper):
     source = "dflab"
     URL = "https://www.df.cl/dflab/innovacionystartups"
-    HEADERS = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/122.0.0.0 Safari/537.36"
-        ),
-        "Accept-Language": "es-CL,es;q=0.9,en;q=0.8",
-    }
-
-    def _absolute_url(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        if value.startswith("http://") or value.startswith("https://"):
-            return value
-        if value.startswith("/"):
-            return f"https://www.df.cl{value}"
-        return f"https://www.df.cl/{value.lstrip('/')}"
+    BASE_URL = "https://www.df.cl"
 
     def _extract_date_from_image_url(self, img_url: str | None) -> date | None:
         if not img_url:
@@ -40,13 +24,6 @@ class DFLabScraper(BaseScraper):
             except ValueError:
                 pass
         return None
-
-    def _clean_text(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        text = re.sub(r"<[^>]+>", " ", value)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text or None
 
     def fetch(self) -> List[NoticiaSchema]:
         noticias: List[NoticiaSchema] = []

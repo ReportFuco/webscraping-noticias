@@ -2,29 +2,12 @@ from .base import BaseScraper
 from schemas import NoticiaSchema
 from utils import normalizar_fecha
 import httpx
-import html
 import re
 
 
 class BioBioScraper(BaseScraper):
     source = "biobiochile"
     URL = "https://www.biobiochile.cl/lista/categorias/nacional"
-    HEADERS = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/122.0.0.0 Safari/537.36"
-        ),
-        "Accept-Language": "es-CL,es;q=0.9,en;q=0.8",
-    }
-
-    def _clean_text(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        text = html.unescape(value)
-        text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text or None
 
     def fetch(self) -> list[NoticiaSchema]:
         noticias: list[NoticiaSchema] = []

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import html
 import json
 import re
 from typing import List
@@ -22,25 +21,6 @@ class LaTerceraPulsoScraper(BaseScraper):
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/122.0.0.0 Safari/537.36"
     )
-
-    def _absolute_url(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        if value.startswith(("http://", "https://")):
-            return value
-        if value.startswith("//"):
-            return f"https:{value}"
-        if value.startswith("/"):
-            return f"{self.BASE_URL}{value}"
-        return f"{self.BASE_URL}/{value.lstrip('/')}"
-
-    def _clean_text(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        text = html.unescape(value)
-        text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text or None
 
     def _extract_json_objects(self, raw_html: str) -> list[dict]:
         objects: list[dict] = []

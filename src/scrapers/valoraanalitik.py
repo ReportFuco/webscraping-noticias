@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import html
 import re
 from datetime import date, datetime
 from typing import List
@@ -16,23 +15,7 @@ class ValoraAnalitikScraper(BaseScraper):
     source = "valoraanalitik"
     country = "CO"
     URL = "https://www.valoraanalitik.com/feed/"
-    HEADERS = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/122.0.0.0 Safari/537.36"
-        ),
-        "Accept-Language": "es-CL,es;q=0.9,en;q=0.8",
-    }
     MAX_ITEMS = 20
-
-    def _clean_text(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        text = html.unescape(value)
-        text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text or None
 
     def _parse_pub_date(self, value: str | None) -> date | None:
         if not value:

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import html
 import re
 from datetime import date, datetime
 from typing import List
@@ -15,28 +14,12 @@ class RetailActualScraper(BaseScraper):
     source = "retailactual"
     country = "ES"
     URL = "https://www.retailactual.com/noticias"
-    HEADERS = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/122.0.0.0 Safari/537.36"
-        ),
-        "Accept-Language": "es-CL,es;q=0.9,en;q=0.8",
-    }
     BLOCK_RE = re.compile(r'<article class="new">.*?</article>', re.DOTALL)
     TITLE_RE = re.compile(r'<h2>(.*?)</h2></a>')
     URL_RE = re.compile(r'<a href="([^"]+)"[^>]*>\s*<h2>')
     IMG_RE = re.compile(r'<img src="([^"]+)"')
     DATE_URL_RE = re.compile(r"/noticias/(\d{8})/")
     EXCERPT_RE = re.compile(r"</div>\s*<p>(.*?)</p>", re.DOTALL)
-
-    def _clean_text(self, value: str | None) -> str | None:
-        if not value:
-            return None
-        text = html.unescape(value)
-        text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text or None
 
     def _parse_date(self, value: str | None) -> date | None:
         if not value:
